@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     # local apps
     'accounts',
     'board',
+    'movies',
     
     # 3rd party apps
     'corsheaders',
