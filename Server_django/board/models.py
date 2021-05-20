@@ -1,10 +1,10 @@
 from django.db import models
 from django.conf import settings
 
-num_choices = zip(range(0, 5), range(0, 5))
-
 
 class Review(models.Model):
+    num_choices = zip(range(0, 5), range(0, 5))
+
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     movie_title = models.CharField(max_length=50)  # 영화도 검색해서 고를 수 있게 하고 싶습니다..
