@@ -11,7 +11,7 @@ class Review(models.Model):
     rank = models.IntegerField(choices=num_choices)
     # rank = models.IntegerField()  # 이거 1-5점 선택..
     content = models.TextField(verbose_name='Description')
-    like = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like')
+    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_reviews')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -24,5 +24,5 @@ class Comment(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     # 대댓글
     # 댓글 참조, 값이 비어 있다면, 댓글, 값이 채워져있으면 대댓글
-    reply = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
+    reply_to = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name='replied_by')
 

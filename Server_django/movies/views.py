@@ -7,51 +7,105 @@ import pprint
 import requests
 
 from .models import Movie, Genre
-from .api_request import get_genre, recommend_movies, get_movie_info, search, get_providers
+from .api_request import get_genre, recommend_movies, get_movie_info, search, get_providers, get_genre_list
+from .serializers import GenreSerializer, MovieSerializer, MovieListSerializer
 
 
-# 장르 데이터는 처음부터 db에 가지고 있는 것이 좋을까요..?
-# 사실 그렇다면 합쳐도 되는 걸..
-# 이거 굳이 뷰에서 가지고 있을 필요가 없슴미당
-def get_genre_data():
+# 영화 장르 정보 가져오기
+@api_view(['POST'])
+def get_genre_data(request):
     datum = get_genre()
 
+    results = {
+        'saved': 0,
+        'failed': 0,
+    }
+
     for data in datum:
-        genre = Genre(genre_id=data['id'], name=data['name'])
-        genre.save()
-
-
-
-
-## 대충 이런 느낌..
-@api_view(['GET', 'POST'])
-def create_movie(request, movie_key):
-    # api 요청 보내서 영화 데이터 만들기
-    if request.method == 'POST':
-        if not Movie.objects.filter(movie_key=movie_key):
-            api_key = '1f6f8f7d643eea003df9f19e38d13c3d'
-            url = f'https://api.themoviedb.org/3/movie/{movie_key}?api_key={api_key}&language=en-US'
-            response = requests.get(url).json()
-            pprint.pprint(response)
-
-            movie = {
-                'movie_key': movie_key,
-                'title': response['title'],
-                'overview': response['overview'],
-                'release_date': response['release_date'],
-                'poster_path': response['poster_path'],
-            }
-
-            serializer = MovieSerializer(data=movie)
-
-            if serializer.is_valid(raise_exception=True):
+        if not Genre.objects.all().filter(pk=data['id']).exists():
+            serializer = GenreSerializer(data=data)
+            # if serializer.is_valid(raise_exception=True):
+            if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data, status=status.HTTP_200_OK)
+                results['saved'] += 1
+            else:
+                results['failed'] += 1
 
+    return Response(data=results)
+
+
+# 영화 생성 혹은 영화 전체 리스트
+@api_view(['GET', 'POST'])
+def movie_list_or_create(request):
+
+    # 단일 영화 생성
+    if request.method == 'POST':
+        # print(request.data['condition'])
+        '''
+        # recommend_movies(condition, page=1)
+        인기 영화 = popular
+        top_rated = top_rated
+
+        // 페이지 한개 밖에 없는 듯 //
+        개봉예정 = upcoming
+        상영중 = now_playing
+        '''
+        # condition 이 들어서 요청이 왔다면,
+        if request.data.get('condition'):
+            datum = recommend_movies(request.data['condition'])
+            pprint.pprint(datum)
         else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            datum = request.data
 
+        results = {
+            'success': [],
+            'failed': []
+        }
+
+        for data in datum:
+            print(data)
+            movie_pk = data['id']
+            if not Movie.objects.all().filter(pk=movie_pk):
+                serializer = MovieSerializer(data=data)
+                if serializer.is_valid(raise_exception=True):
+                    serializer.save()
+                    movie = get_object_or_404(Movie, pk=movie_pk)
+                    genres = data['genre_ids']
+                    # genres = get_genre_list(data['genre_ids'])
+                    for genre in genres:
+                        movie.genres.add(genre)
+                        movie.save()
+                    results['success'].append(data['title'])
+                # return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+            # movie_pk = request.data['id']
+            # if not Movie.objects.all().filter(pk=movie_pk):
+            #     serializer = MovieSerializer(data=request.data)
+            #     if serializer.is_valid(raise_exception=True):
+            #         serializer.save()
+            #         movie = get_object_or_404(Movie, pk=movie_pk)
+            #         genres = get_genre_list(request.data['genre_ids'])
+            #         for genre in genres:
+            #             movie.genres.add(genre)
+            #             movie.save()
+            #         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+            # 이미 있는 영화
+            else:
+                results['failed'].append(data['title'])
+
+        return Response(data=results)
+
+    # 전체 영화 리스트
     elif request.method == 'GET':
-        movie = get_object_or_404(Movie, movie_key=movie_key)
-        serializer = MovieSerializer(instance=movie)
-        return Response(data=serializer.data)
+        movies = Movie.objects.all()
+        serializer = MovieListSerializer(movies, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+# 단일 영화 상세 페이지
+@api_view(['GET'])
+def movie_detail(request, movie_pk):
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    serializer = MovieSerializer(movie)
+    return Response(serializer.data)

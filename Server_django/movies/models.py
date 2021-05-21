@@ -2,12 +2,12 @@ from django.db import models
 
 
 class Genre(models.Model):
-    genre_id = models.IntegerField()
+    id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=50)
 
 
 class Movie(models.Model):
-    movie_id = models.IntegerField()
+    id = models.IntegerField(primary_key=True)
     title = models.CharField(max_length=100)
     release_date = models.DateField()
     popularity = models.FloatField()

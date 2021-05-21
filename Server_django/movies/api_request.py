@@ -1,5 +1,7 @@
 import pprint
 import requests
+import re
+
 from bs4 import BeautifulSoup
 
 URL = 'https://api.themoviedb.org/3'
@@ -27,7 +29,8 @@ def recommend_movies(condition, page=1):
     recommend_URL = f'https://api.themoviedb.org/3/movie/{condition}?api_key=1f6f8f7d643eea003df9f19e38d13c3d&language=ko-KR&page={page}&region=KR'
     response = requests.get(recommend_URL).json()['results']
 
-    return response
+    print('!!', response[0])
+    return response[0]
 
 
 def get_movie_info(movie_id, condition='', page=1):
@@ -104,12 +107,14 @@ def get_providers(movie_id):
         'rent': rent,
     }
 
-    pprint.pprint(providers)
-
     return providers
 
-get_providers(155)
 
+def get_genre_list(genres):
+    genre = re.compile(r'\d+')
+    genres = genre.findall(genres)
+
+    return genres
 
 
 
