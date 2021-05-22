@@ -9,7 +9,7 @@ urlpatterns = [
     # 장르 정보 업데이트
     path('genres/', movies.views.get_genre_data),
     # 단일 영화 정보
-    path('<int:movie_pk>/', movies.views.movie_detail),
+    path('<int:movie_pk>/', movies.views.get_or_create_movie),
     # 리뷰 생성
     path('<int:movie_pk>/review/', board.views.create_review),
     # 리뷰 상세 페이지 (조회, 수정, 삭제) --> 이 페이지에 댓글 생성 & 반환

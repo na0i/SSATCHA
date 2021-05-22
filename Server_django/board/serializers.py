@@ -43,7 +43,7 @@ class ReviewListSerializer(serializers.ModelSerializer):
 
 # 리뷰
 class ReviewSerializer(serializers.ModelSerializer):
-    num_choices = zip(range(0, 5), range(0, 5))
+    # num_choices = zip(range(0, 5), range(0, 5))
 
     try:
         from movies.serializers import MovieSerializer
@@ -54,13 +54,14 @@ class ReviewSerializer(serializers.ModelSerializer):
     movie_title = serializers.CharField(max_length=100, source='movie.title', read_only=True)
     title = serializers.CharField(max_length=100)
     content = serializers.CharField(min_length=1)
-    rank = serializers.ChoiceField(choices=num_choices)
+    rank = serializers.IntegerField()
+    # rank = serializers.ChoiceField(choices=num_choices)
     comment_set = CommentSerializer(many=True, read_only=True)
 
     class Meta:
         model = Review
         fields = '__all__'
-        read_only_fields = ('movie', 'movie_title', 'comment_set')
+        read_only_fields = ('movie', 'movie_title', 'comment_set', 'user', 'like_users')
 
 
 

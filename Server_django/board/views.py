@@ -6,20 +6,24 @@ from .models import Review, Comment
 from .serializers import ReviewSerializer, CommentSerializer
 from movies.models import Movie
 
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
 
 # 리뷰 생성
 @api_view(['POST'])
 def create_review(request, movie_pk):
+    # user = get_object_or_404(User, pk=1)  생성되는지 보려고 한번 슈퍼유저로 해봤읍니다..
     movie = get_object_or_404(Movie, pk=movie_pk)
     serializer = ReviewSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
-        serializer.save(movie=movie)
+        serializer.save(movie=movie, user=user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 # 리뷰 읽기+댓글목록, 수정, 삭제
 @api_view(['GET', 'PUT', 'DELETE'])
-def read_or_update_or_delete_review(request, review_pk, movie_pk):
+def read_or_update_or_delete_review(request, movie_pk, review_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
     review = get_object_or_404(Review, pk=review_pk)
 

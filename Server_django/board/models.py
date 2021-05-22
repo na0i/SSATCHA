@@ -7,7 +7,7 @@ class Review(models.Model):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
-    movie_title = models.CharField(max_length=50)  # 영화도 검색해서 고를 수 있게 하고 싶습니다..
+    movie = models.CharField(max_length=50)  # 영화도 검색해서 고를 수 있게 하고 싶습니다..
     rank = models.IntegerField(choices=num_choices)
     # rank = models.IntegerField()  # 이거 1-5점 선택..
     content = models.TextField(verbose_name='Description')

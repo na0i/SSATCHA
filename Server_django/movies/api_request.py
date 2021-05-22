@@ -4,6 +4,12 @@ import re
 
 from bs4 import BeautifulSoup
 
+from django.shortcuts import get_object_or_404
+from .models import Movie
+from .serializers import MovieSerializer
+
+
+
 URL = 'https://api.themoviedb.org/3'
 api_key = '1f6f8f7d643eea003df9f19e38d13c3d'
 
@@ -29,8 +35,9 @@ def recommend_movies(condition, page=1):
     recommend_URL = f'https://api.themoviedb.org/3/movie/{condition}?api_key=1f6f8f7d643eea003df9f19e38d13c3d&language=ko-KR&page={page}&region=KR'
     response = requests.get(recommend_URL).json()['results']
 
-    print('!!', response[0])
-    return response[0]
+    return response
+
+recommend_movies('now_playing')
 
 
 def get_movie_info(movie_id, condition='', page=1):
@@ -40,14 +47,16 @@ def get_movie_info(movie_id, condition='', page=1):
         condition = '/' + condition
     elif condition == 'similar':
         condition = '/' + condition
-    else:
+    elif condition == 'watch':
         condition = '/watch/providers'
 
     url = f'https://api.themoviedb.org/3/movie/{movie_id}{condition}?api_key=1f6f8f7d643eea003df9f19e38d13c3d&language=ko-KR&page={page}'
-    response = requests.get(url).json()['results']
+    response = requests.get(url).json()
 
     if condition == '/watch/providers':
-        response = response['KR']
+        response = response['results']['KR']
+    elif condition == 'credits' or condition == 'similar':
+        response = response['results']
 
     return response
 
@@ -117,6 +126,18 @@ def get_genre_list(genres):
     return genres
 
 
+def save_movie(data):
+    movie_pk = data['id']
+    serializer = MovieSerializer(data=data)
+    if serializer.is_valid(raise_exception=True):
+        serializer.save()
+        movie = get_object_or_404(Movie, pk=movie_pk)
+        genres = data['genre_ids']
+        # genres = get_genre_list(data['genre_ids'])
+        for genre in genres:
+            movie.genres.add(genre)
+            movie.save()
+        return serializer.data
 
 
 
