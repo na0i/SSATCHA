@@ -6,6 +6,8 @@ import movies.views
 urlpatterns = [
     # 전체 영화 조회 및 생성
     path('', movies.views.movie_list_or_create),
+    # 최초 정보 등록
+    path('initial_data/', movies.views.fetch_initial_datum),
     # 장르 정보 업데이트
     path('genres/', movies.views.get_genre_data),
     # 단일 영화 정보

@@ -33,11 +33,13 @@ def recommend_movies(condition, page=1):
     '''
 
     recommend_URL = f'https://api.themoviedb.org/3/movie/{condition}?api_key=1f6f8f7d643eea003df9f19e38d13c3d&language=ko-KR&page={page}&region=KR'
-    response = requests.get(recommend_URL).json()['results']
+    response = requests.get(recommend_URL).json()
+    # print(response)
+    # print(recommend_URL)
+    response = response['results']
 
     return response
 
-recommend_movies('now_playing')
 
 
 def get_movie_info(movie_id, condition='', page=1):
@@ -126,12 +128,19 @@ def get_genre_list(genres):
     return genres
 
 
+
+
+
+
+
+
 def save_movie(data):
     movie_pk = data['id']
     serializer = MovieSerializer(data=data)
     if serializer.is_valid(raise_exception=True):
         serializer.save()
         movie = get_object_or_404(Movie, pk=movie_pk)
+        # print(movie)
         genres = data['genre_ids']
         # genres = get_genre_list(data['genre_ids'])
         for genre in genres:
@@ -140,6 +149,18 @@ def save_movie(data):
         return serializer.data
 
 
+### fetch initial datum
+def fetch_datum():
+    # 평점 높은 순으로 50/
+    # 최신영화 50/
+    for i in range(50):
+        recommend_movies('popular', page=i)
+
+    for i in range(50):
+        recommend_movies('top_rated', page=i)
+
+    for i in range(50):
+        recommend_movies('latest', page=i)
 
 
 
