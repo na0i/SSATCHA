@@ -5,6 +5,7 @@ export default {
     signup: 'rest-auth/signup/',
     login: 'rest-auth/login/',
     logout: 'rest-auth/logout/',
+    profile: 'profile/',
     // articles: 'board/articles/',
     // article: `board/articles/`
   }
