@@ -4,9 +4,17 @@ import _ from 'lodash'
 // 장고 서버 url
 import DRF from '@/api/drf'
 
+
 const state = {
-  movies: []
+  movies: [],
+  selectedMovie: {},
+  selectedMovieProviders: {
+        buy: [],
+        flatrate: [],
+        rent: [],
+      },
 }
+
 
 const getters = {
   fetchTopRated() {
@@ -28,11 +36,33 @@ const getters = {
   },
 }
 
+
 const mutations = {
   SET_MOVIES: (state, movies) => {
     state.movies = movies
-  }
+  },
+  SET_MOVIE_DETAIL: (state, movie) => {
+    state.selectedMovie = movie
+  },
+  SET_PROVIDERS: (state, data) => {
+    if (data === undefined) {
+      state.selectedMovieProviders.buy = []
+      state.selectedMovieProviders.flatrate = []
+      state.selectedMovieProviders.rent = []
+    } else {
+      if (data.buy) {
+        state.selectedMovieProviders.buy = data.buy
+      }
+      if (data.flatrate) {
+        state.selectedMovieProviders.flatrate = data.flatrate
+      }
+      if (data.rent) {
+        state.selectedMovieProviders.rent = data.rent
+      }
+    }
+  },
 }
+
 
 const actions = {
   fetchMovies({commit}) {
@@ -41,8 +71,15 @@ const actions = {
         commit('SET_MOVIES', res.data)
       })
       .catch(err => console.log(err))
+  },
+  setMovieDetail({commit}, movie) {
+    commit('SET_MOVIE_DETAIL', movie)
+    axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/watch/providers?api_key=1f6f8f7d643eea003df9f19e38d13c3d&language=ko-KR&page=1`)
+    .then(res => { commit('SET_PROVIDERS', res.data.results.KR)})
+    .catch(err => console.log(err))
   }
 }
+
 
 export default {
   state, getters, mutations, actions
