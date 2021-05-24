@@ -25,9 +25,9 @@ class MovieListSerializer(serializers.ModelSerializer):
 class MovieSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField()
     title = serializers.CharField(max_length=100)
-    overview = serializers.CharField(min_length=1)
-    release_date = serializers.DateField()
-    poster_path = serializers.CharField(max_length=200)
+    overview = serializers.CharField(min_length=1, required=False, allow_blank=True)
+    release_date = serializers.DateField(required=False)
+    poster_path = serializers.CharField(max_length=200, required=False)
     genres = GenreSerializer(many=True, required=False)
     # 리뷰의 경우 null 가능하도록 해야 하나요?
     try:
