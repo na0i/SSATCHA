@@ -2,6 +2,7 @@ from django.db import models
 
 
 class Genre(models.Model):
+    id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=50)
 
 
@@ -15,6 +16,4 @@ class Movie(models.Model):
     overview = models.TextField()
     poster_path = models.CharField(max_length=200)
     genres = models.ManyToManyField(Genre)
-
-
 
