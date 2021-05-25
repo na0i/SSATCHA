@@ -40,7 +40,7 @@
 import {mapActions, mapState} from "vuex";
 
 export default {
-  name: "CreateReview",
+  name: "UpsertReview",
   data() {
     return {
       reviewData: {
