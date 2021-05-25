@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import SignupView from '@/views/accounts/SignupView.vue'
 import LoginView from '@/views/accounts/LoginView.vue'
 import LogoutView from '@/views/accounts/LogoutView.vue'
+import ProfileView from '@/views/accounts/ProfileView.vue'
 
 import MovieIndexView from "@/views/movies/MovieIndexView";
 import MovieDetail from "@/components/MovieDetail";
@@ -16,6 +17,7 @@ const routes = [
   { path: '/accounts/signup', name: 'Signup', component: SignupView },
   { path: '/accounts/login',  name: 'Login',  component: LoginView },
   { path: '/accounts/logout', name: 'Logout', component: LogoutView },
+  { path: '/accounts/profile', name: 'Profile', component: ProfileView },
 
   // movies
   { path: '/', name: 'MovieIndex', component: MovieIndexView},
