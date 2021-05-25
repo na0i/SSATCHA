@@ -23,6 +23,6 @@ urlpatterns = [
     # 댓글 생성
     path('<int:movie_pk>/review/<int:review_pk>/comment/', board.views.create_comment),
     # 댓글 수정/ 삭제/ 대댓글 생성
-    path('<int:movie_pk>/review/<int:review_pk>/comment/<int:comment_pk>/', board.views.update_or_delete_comment),
+    path('<int:movie_pk>/review/<int:review_pk>/comment/<int:comment_pk>/', board.views.update_or_delete_or_recreate_comment),
 
 ]

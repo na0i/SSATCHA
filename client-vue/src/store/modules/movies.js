@@ -1,10 +1,7 @@
 import axios from "axios";
 import _ from 'lodash'
-// import router from "@/router";
 // 장고 서버 url
 import DRF from '@/api/drf'
-// import router from "@/router";
-// import {mapState} from "vuex";
 
 
 const state = {
@@ -19,7 +16,6 @@ const state = {
 
 
 const getters = {
-  // ...mapState({loginUser: state => state.accounts.loginUser}),
   fetchTopRated() {
     return _.sortBy(state.movies.filter(movie => movie.vote_count > 300), 'vote_average').reverse().slice(0, 40)
   },
@@ -37,12 +33,14 @@ const getters = {
       return regex.test(movie.release_date)}, 'vote_average').reverse().slice(0, 40)
     )
   },
-  getMovieId() {
-    return state.selectedMovie.id
-  },
 
-  isMovieLiked(state, getters, rootState ) {
-    return !!state.selectedMovie.like_users.filter(user => user.id === rootState.accounts.loginUser.pk).length
+  // 유저가 좋아요 누른 영화인지 여부
+  isMovieLiked(state, getters, rootState) {
+    if (state.selectedMovie.like_users) {
+      return !!state.selectedMovie.like_users.filter(user => user.id === rootState.accounts.loginUser.pk).length
+    } else {
+      return false
+    }
   },
 }
 
@@ -52,7 +50,7 @@ const mutations = {
     state.movies = movies
   },
   SET_MOVIE_DETAIL: (state, movie) => {
-    console.log(movie)
+    // console.log(movie)
     state.selectedMovie = movie
   },
   SET_PROVIDERS: (state, data) => {
@@ -72,7 +70,9 @@ const mutations = {
       }
     }
   },
-  SET_LIKE_USERS(state, likeUsers) {
+
+  // 좋아요 누른 유저 저장
+  SET_MOVIE_LIKE_USERS(state, likeUsers) {
     state.selectedMovie.like_users = likeUsers
   },
 }
@@ -107,10 +107,9 @@ const actions = {
   likeMovie({getters, commit, rootState}, movie) {
     const loginUser = rootState.accounts.loginUser
     axios.post(DRF.URL + `${movie}/likes/`, loginUser, getters.config)
-      .then((res) => {commit('SET_LIKE_USERS', res.data.like_users); console.log(res.data)})
+      .then((res) => commit('SET_MOVIE_LIKE_USERS', res.data.like_users))
       .catch((err) => console.log(err))
   },
-
 }
 
 

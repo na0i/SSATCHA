@@ -14,23 +14,24 @@ class RecursiveSerializer(serializers.Serializer):
 
 # 댓글
 class CommentSerializer(serializers.ModelSerializer):
-    reply_to = RecursiveSerializer(many=True, read_only=True, allow_null=True)
+    replied_by = RecursiveSerializer(many=True, read_only=True)
     # reply_to = serializers.SerializerMethodField()
     content = serializers.CharField(max_length=100)
 
     class Meta:
         model = Comment
-        fields = ('content', 'reply_to')
-        read_only_fields = ('reply_to', )
+        fields = ('content', 'replied_by', 'id', 'reply_to')
+        read_only_fields = ('replied_by', 'reply_to',)
 
 
-# 댓글 수정
-# class CommentUpdateSerializer(serializers.ModelSerializer):
-#     comment = CommentSerializer()
-#
-#     class Meta:
-#         model = Comment
-#         fields = ('review', 'user', 'reply_to', 'content', )
+# 댓글 목록 반환
+class CommentSetSerializer(serializers.ModelSerializer):
+    comment_set = CommentSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Review
+        fields = ('comment_set', )
+        read_only_fields = ('comment_set', )
 
 
 # 리뷰 목록
