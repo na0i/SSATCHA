@@ -37,16 +37,8 @@ const mutations = {
 
 
 const actions = {
-  // 리뷰 업데이트
-  fetchReview({commit}, {movie, review}) {
-    axios.get(DRF.URL + `${movie}/review/${review}/`)
-      .then(res => {
-        commit('SET_REVIEW', res.data)
-      })
-      .catch(err => console.log(err))
-  },
 
-  // 새로운 리뷰 생성
+  // 새로운 리뷰 생성 --> C
   createReview({getters, commit}, reviewData) {
     // <int:movie_pk>/review/
     axios.post(DRF.URL + `${reviewData.movie}/review/`, reviewData, getters.config)
@@ -55,6 +47,35 @@ const actions = {
       .then(() => router.push({ name: 'ReviewDetail', params: {movie_id: reviewData.movie, review_id: this.state.boards.selectedReview.id}}))
       .catch(err => console.log(err))
   },
+
+  // 리뷰 불러오기 -> R
+  fetchReview({commit}, {movie, review}) {
+    axios.get(DRF.URL + `${movie}/review/${review}/`)
+      .then(res => {
+        commit('SET_REVIEW', res.data)
+      })
+      .catch(err => console.log(err))
+  },
+
+  // 리뷰 업데이트 -> U
+  updateReview({getters, commit}, reviewData) {
+    console.log(commit)
+    console.log(reviewData)
+    axios.put(DRF.URL + `${reviewData.movie}/review/${reviewData.review}/`, reviewData, getters.config)
+      .then(res => { commit('SET_REVIEW', res.data)})
+      .then(() => router.push({ name: 'ReviewDetail', params: {movie_id: reviewData.movie, review_id: this.state.boards.selectedReview.id}}))
+      .catch(err => console.log(err))
+  },
+
+  // 리뷰 삭제 -> D
+  deleteReview({getters, dispatch, rootState}, review) {
+    const loginUser = rootState.accounts.loginUser
+    axios.delete(DRF.URL + `${review.movie.id}/review/${review.id}/`, {data: loginUser}, getters.config)
+      .then(() => dispatch('fetchMovieDetail', review.movie.id ))
+      .then(() => router.push({ name: 'MovieDetail', params: {movie_id: review.movie.id}}))
+      .catch(err => console.log(err))
+  },
+
 
   // 새로운 댓글 작성
   createComment({getters, dispatch}, commentData) {

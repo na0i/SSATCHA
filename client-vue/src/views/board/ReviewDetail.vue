@@ -14,6 +14,8 @@
       리뷰 내용: {{ review.content }}
       <br>
       작성일: {{ review.created_at }}
+      <br>
+      수정일: {{ review.updated_at }}
     </h4>
 
     <span v-if="isReviewLiked">
@@ -22,6 +24,14 @@
     <span v-else>
       <button @click="likeReview(commentData)" class="btn btn-danger"> 리뷰 좋아요 </button>
     </span>
+
+    <hr>
+
+    <div v-if="review.user === $store.state.accounts.loginUser.pk">
+      <button @click="editReview" class="btn btn-info ms-2"> 리뷰 수정 </button>
+      <button @click="deleteReview(review)" class="btn btn-dark ms-2"> 리뷰 삭제 </button>
+    </div>
+
 
     <hr>
 
@@ -65,6 +75,14 @@ export default {
     ...mapActions(['createComment', 'fetchReview', 'likeReview']),
     onSubmit() {
       this.commentData.content = ''
+    },
+    editReview() {
+      this.$router.push({ name: 'CreateReview', params: { isUpdate: true, movie_id: this.commentData.movie, review: this.review }})
+    },
+    deleteReview() {
+      if (confirm('정말 삭제하시겠습니까?')) {
+        this.$store.dispatch('deleteReview', this.review)
+      }
     }
   },
   computed: {
