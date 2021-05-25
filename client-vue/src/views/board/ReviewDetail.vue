@@ -77,7 +77,7 @@ export default {
       this.commentData.content = ''
     },
     editReview() {
-      this.$router.push({ name: 'CreateReview', params: { isUpdate: true, movie_id: this.commentData.movie, review: this.review }})
+      this.$router.push({ name: 'UpsertReview', params: { isUpdate: true, movie_id: this.commentData.movie, review: this.review }})
     },
     deleteReview() {
       if (confirm('정말 삭제하시겠습니까?')) {
