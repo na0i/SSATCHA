@@ -30,7 +30,7 @@ const mutations = {
 
   // 댓글 목록 업데이트
   SET_COMMENT_SET(state, commentSet) {
-    state.selectedMovieProviders.comment_set = commentSet
+    state.selectedReview.comment_set = commentSet
   }
 
 }
@@ -68,7 +68,7 @@ const actions = {
   // 대댓글 작성
   createNestedComment({getters, commit}, commentData) {
     axios.post(DRF.URL + `${commentData.movie}/review/${commentData.review}/comment/${commentData.reply_to}/`, commentData, getters.config)
-      .then((res) => {console.log(res.data.comment_set); commit('SET_COMMENT_SET', res.data.comment_set)})
+      .then((res) => commit('SET_COMMENT_SET', res.data.comment_set))
       .catch((err) => console.log(err))
   },
 

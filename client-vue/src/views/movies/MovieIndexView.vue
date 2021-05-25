@@ -38,7 +38,6 @@
 <script>
 import {mapActions, mapGetters} from "vuex";
 import MovieListItem from "@/components/MovieListItem";
-// import MovieDetail from "@/components/MovieDetail";
 
 export default {
   name: "MovieIndex",

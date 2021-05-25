@@ -1,26 +1,27 @@
 <template>
   <div>
     {{ comment.content }}
-    {{ comment.replied_by }}
     <span>
       <button @click="onClick" class="btn btn-warning"> 댓글 달기 </button>
     </span>
     <div v-if="isClicked">
-      <input v-model="commentData.content" @keyup.enter="createNestedComment(commentData)">
-      <button @click="createNestedComment(commentData)"> 등록 </button>
+      <input v-model="commentData.content" @keyup.enter="[createNestedComment(commentData), onSubmit()]">
+      <button @click="[createNestedComment(commentData), onSubmit()]"> 등록 </button>
     </div>
+  <div v-if="!!comment.replied_by.length" class="ms-5">
+    <li v-for="(comment, idx) in comment.replied_by" :key="idx">
+      <CommentItem :comment="comment"/>
+    </li>
+  </div>
+
   </div>
 </template>
 
 <script>
 import {mapActions} from "vuex";
-import CommentItem from
 
 export default {
   name: "CommentItem",
-  components: {
-    CommentItem,
-  },
   props: {
     comment: Object
   },
@@ -39,10 +40,11 @@ export default {
     ...mapActions(['createNestedComment']),
     onClick() {
       this.isClicked = !this.isClicked
+    },
+    onSubmit() {
+      this.isClicked = false
+      this.commentData.content = ''
     }
-  },
-  computed: {
-
   },
   mounted() {
     this.commentData.movie = this.$route.params.movie_id

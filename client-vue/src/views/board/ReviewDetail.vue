@@ -26,9 +26,9 @@
     <hr>
 
     <h3>댓글</h3>
-    <div @keyup.enter="createComment(commentData)">
-      <input v-model="commentData.content"/>
-      <button @click="createComment(commentData)" class="btn btn-success">댓글 달기</button>
+    <div >
+      <input v-model="commentData.content" @keyup.enter="[createComment(commentData), onSubmit()]"/>
+      <button @click="[createComment(commentData), onSubmit()]" class="btn btn-success">댓글 달기</button>
     </div>
 
     <div v-if="isCommented">
@@ -62,7 +62,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['createComment', 'fetchReview', 'likeReview'])
+    ...mapActions(['createComment', 'fetchReview', 'likeReview']),
+    onSubmit() {
+      this.commentData.content = ''
+    }
   },
   computed: {
     ...mapState({review: state => state.boards.selectedReview}),
@@ -75,7 +78,7 @@ export default {
     this.commentData.movie = this.$route.params.movie_id
     this.commentData.review = this.$route.params.review_id
     this.$store.dispatch('fetchReview', { movie: this.$route.params.movie_id, review: this.$route.params.review_id})
-  }
+  },
 }
 </script>
 
