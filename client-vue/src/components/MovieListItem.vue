@@ -8,10 +8,6 @@
     </div>
   </div>
 
-  <!--<div @click="[setMovieDetail(movie), onClick()]">-->
-  <!--  <img src="" alt="">-->
-  <!--  {{ movie.title }} // {{ movie.vote_average }}-->
-  <!--</div>-->
 </template>
 
 <script>

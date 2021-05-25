@@ -13,13 +13,14 @@ class RecursiveSerializer(serializers.Serializer):
 
 # 댓글
 class CommentSerializer(serializers.ModelSerializer):
-    replied_by = RecursiveSerializer(many=True, read_only=True, allow_null=True)
+    reply_to = RecursiveSerializer(many=True, read_only=True, allow_null=True)
     # reply_to = serializers.SerializerMethodField()
     content = serializers.CharField(max_length=100)
 
     class Meta:
         model = Comment
-        fields = ('content', )
+        fields = ('content', 'reply_to')
+        read_only_fields = ('reply_to', )
 
 
 # 댓글 수정
@@ -43,8 +44,6 @@ class ReviewListSerializer(serializers.ModelSerializer):
 
 # 리뷰
 class ReviewSerializer(serializers.ModelSerializer):
-    # num_choices = zip(range(0, 5), range(0, 5))
-
     try:
         from movies.serializers import MovieSerializer
     except ImportError:
@@ -55,7 +54,6 @@ class ReviewSerializer(serializers.ModelSerializer):
     title = serializers.CharField(max_length=100)
     content = serializers.CharField(min_length=1)
     rank = serializers.IntegerField()
-    # rank = serializers.ChoiceField(choices=num_choices)
     comment_set = CommentSerializer(many=True, read_only=True)
 
     class Meta:
