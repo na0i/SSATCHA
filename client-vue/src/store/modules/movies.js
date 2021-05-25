@@ -3,6 +3,8 @@ import _ from 'lodash'
 // import router from "@/router";
 // 장고 서버 url
 import DRF from '@/api/drf'
+// import router from "@/router";
+// import {mapState} from "vuex";
 
 
 const state = {
@@ -17,6 +19,7 @@ const state = {
 
 
 const getters = {
+  // ...mapState({loginUser: state => state.accounts.loginUser}),
   fetchTopRated() {
     return _.sortBy(state.movies.filter(movie => movie.vote_count > 300), 'vote_average').reverse().slice(0, 40)
   },
@@ -36,7 +39,11 @@ const getters = {
   },
   getMovieId() {
     return state.selectedMovie.id
-  }
+  },
+
+  isMovieLiked(state, getters, rootState ) {
+    return !!state.selectedMovie.like_users.filter(user => user.id === rootState.accounts.loginUser.pk).length
+  },
 }
 
 
@@ -45,6 +52,7 @@ const mutations = {
     state.movies = movies
   },
   SET_MOVIE_DETAIL: (state, movie) => {
+    console.log(movie)
     state.selectedMovie = movie
   },
   SET_PROVIDERS: (state, data) => {
@@ -64,6 +72,9 @@ const mutations = {
       }
     }
   },
+  SET_LIKE_USERS(state, likeUsers) {
+    state.selectedMovie.like_users = likeUsers
+  },
 }
 
 
@@ -77,13 +88,29 @@ const actions = {
       .catch(err => console.log(err))
   },
 
+  // 저장된 영화 정보 -> 리뷰 및 좋아요까지
+  fetchMovieDetail({commit}, movieId) {
+    axios.get(DRF.URL + `${movieId}/`)
+      .then((res) => commit('SET_MOVIE_DETAIL', res.data))
+      .catch((err) => console.log(err))
+  },
+
   // 선택한 영화 상세정보 불러오기
-  setMovieDetail({commit}, movie) {
-    commit('SET_MOVIE_DETAIL', movie)
-    axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/watch/providers?api_key=1f6f8f7d643eea003df9f19e38d13c3d&language=ko-KR&page=1`)
+  setMovieDetail({dispatch, commit}, movieId) {
+    dispatch('fetchMovieDetail', movieId)
+    axios.get(`https://api.themoviedb.org/3/movie/${movieId}/watch/providers?api_key=1f6f8f7d643eea003df9f19e38d13c3d&language=ko-KR&page=1`)
     .then(res => { commit('SET_PROVIDERS', res.data.results.KR)})
     .catch(err => console.log(err))
-  }
+  },
+
+  // 영화 좋아요
+  likeMovie({getters, commit, rootState}, movie) {
+    const loginUser = rootState.accounts.loginUser
+    axios.post(DRF.URL + `${movie}/likes/`, loginUser, getters.config)
+      .then((res) => {commit('SET_LIKE_USERS', res.data.like_users); console.log(res.data)})
+      .catch((err) => console.log(err))
+  },
+
 }
 
 

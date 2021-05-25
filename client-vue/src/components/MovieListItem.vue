@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <div @click="setMovieDetail(movie)">
+    <div @click="setMovieDetail(movie.id)">
       <RouterLink :to="`/${movie.id}`">
         {{ movie.title }} // {{ movie.vote_average }}
       </RouterLink>

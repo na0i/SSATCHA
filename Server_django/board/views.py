@@ -3,8 +3,10 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
+
 from .models import Review, Comment
-from .serializers import ReviewSerializer, CommentSerializer
+from .serializers import ReviewSerializer, CommentSerializer, ReviewLikeUserSerializer
+
 from movies.models import Movie
 
 from django.contrib.auth import get_user_model
@@ -104,29 +106,48 @@ def update_or_delete_comment(request, review_pk, comment_pk):
 
 
 # 리뷰 좋아요
+# 영화 좋아요
 @api_view(['POST'])
-def like_review(request, review_pk):
-    if request.user.is_authenticated:
-        review = get_object_or_404(Review, pk=review_pk)
-        user = request.user
-        if review.like_users.filter(pk=user.pk).exists():
-            review.like_users.remove(user)
-            data = {
-                'like': False,
-                'count': review.like_users.count()
-            }
-        else:
-            review.like_users.add(user)
-            data = {
-                'like': True,
-                'count': review.like_users.count()
-            }
+@permission_classes([IsAuthenticated])
+def like_review(request, movie_pk, review_pk):
+    review = get_object_or_404(Review, pk=review_pk)
+    user = request.user
 
-        return Response(data=data, status=status.HTTP_202_ACCEPTED)
+    # 좋아요 취소
+    if review.like_users.filter(username=user).exists():
+        review.like_users.remove(user)
 
-    # 회원이 아닌 경우
-    # return HttpResponseRedirect('rest-auth/login/')
-    return HttpResponseRedirect('http://127.0.0.1:8000/rest-auth/login/')
+    # 좋아요
+    else:
+        review.like_users.add(user)
+
+    serializer = ReviewLikeUserSerializer(review)
+    return Response(serializer.data)
+
+
+# @api_view(['POST'])
+# def like_review(request, review_pk):
+#     if request.user.is_authenticated:
+#         review = get_object_or_404(Review, pk=review_pk)
+#         user = request.user
+#         if review.like_users.filter(pk=user.pk).exists():
+#             review.like_users.remove(user)
+#             data = {
+#                 'like': False,
+#                 'count': review.like_users.count()
+#             }
+#         else:
+#             review.like_users.add(user)
+#             data = {
+#                 'like': True,
+#                 'count': review.like_users.count()
+#             }
+#
+#         return Response(data=data, status=status.HTTP_202_ACCEPTED)
+#
+#     # 회원이 아닌 경우
+#     # return HttpResponseRedirect('rest-auth/login/')
+#     return HttpResponseRedirect('http://127.0.0.1:8000/rest-auth/login/')
 
 
 
