@@ -39,39 +39,45 @@ def get_genre_data(request):
 def fetch_initial_datum(request):
 
     # 관리자의 경우에만 최초 데이터 불러오기 가능
-    if request.user.is_superuser:
+    # if request.user.is_superuser:
 
-        conditions = ['popular', 'top_rated']
+    conditions = ['popular', 'top_rated']  # top_rated
 
-        results = {
-            'success': 0,
-            'failed': [
-                0,
-                {
-                    'title': []
-                }
-            ]
-        }
+    results = {
+        'success': 0,
+        'failed': [
+            0,
+            {
+                'title': []
+            }
+        ]
+    }
 
-        # 인기순 100/
-        # 평점 높은 순 100/
-        for condition in conditions:
-            for i in range(1, 201):
-                datum = recommend_movies(condition, page=i)
-                for data in datum:
-                    movie_pk = data['id']
-                    if not Movie.objects.all().filter(pk=movie_pk):
-                        save_movie(data)
-                        results['success'] += 1
-                    else:
-                        results['failed'][0] += 1
-                        results['failed'][1]['title'].append(data['title'])
+    # 인기순 100/
+    # 평점 높은 순 100/
+    for condition in conditions:
+        for i in range(1, 201):
+            datum = recommend_movies(condition, page=i)
+            for data in datum:
+                if data['popularity'] < 10:
+                    continue
 
-        return Response(data=results)
+                if data['vote_count'] < 30:
+                    continue
+
+                movie_pk = data['id']
+                if not Movie.objects.all().filter(pk=movie_pk):
+                    save_movie(data)
+                    results['success'] += 1
+                else:
+                    results['failed'][0] += 1
+                    results['failed'][1]['title'].append(data['title'])
+
+    return Response(data=results)
 
     # 관리자가 아닌 경우에는, 메인으로 이동
-    else:
-        return HttpResponseRedirect('http://127.0.0.1:8000/')
+    # else:
+    #     return HttpResponseRedirect('http://127.0.0.1:8000/')
 
 
 # 영화 생성 혹은 영화 전체 리스트
@@ -143,8 +149,8 @@ def movie_list_or_create(request):
 
     # 전체 영화 리스트
     elif request.method == 'GET':
-        movies = Movie.objects.all()
-        serializer = MovieListSerializer(movies, many=True)
+        movies = Movie.objects.all()[:4000]
+        serializer = MovieSerializer(movies, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 

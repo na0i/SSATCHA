@@ -1,9 +1,8 @@
 <template>
   <div id="app">
-    <div id="navbar navbar-dark bg-dark">
-      <RouterLink to="/">SSATCHA</RouterLink> |
-      <!-- <RouterLink :to="{ name: 'List' }">Articles</RouterLink> | -->
-      <RouterLink v-if="!isLoggedIn" :to="{ name: 'Signup' }">Signup | </RouterLink> 
+    <div id="navbar">
+      <RouterLink :to="{ name: 'MovieIndex'}">SSATCHA</RouterLink> |
+      <RouterLink v-if="!isLoggedIn" :to="{ name: 'Signup' }">Signup | </RouterLink>
       <RouterLink v-if="!isLoggedIn" :to="{ name: 'Login' }">Login |</RouterLink> 
       <RouterLink v-if="isLoggedIn" :to="{ name: 'Logout' }">Logout | </RouterLink>
       <RouterLink v-if="isLoggedIn" :to="{ name: 'Profile' }">Profile |</RouterLink>

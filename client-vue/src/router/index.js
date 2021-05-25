@@ -6,6 +6,10 @@ import LoginView from '@/views/accounts/LoginView.vue'
 import LogoutView from '@/views/accounts/LogoutView.vue'
 import ProfileView from '@/views/accounts/ProfileView.vue'
 
+import MovieIndexView from "@/views/movies/MovieIndexView";
+import MovieDetail from "@/components/MovieDetail";
+
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -15,7 +19,11 @@ const routes = [
   { path: '/accounts/logout', name: 'Logout', component: LogoutView },
   { path: '/accounts/profile', name: 'Profile', component: ProfileView },
 
+  // movies
+  { path: '/', name: 'MovieIndex', component: MovieIndexView},
+  { path: '/:id?', name: 'MovieDetail', component: MovieDetail},
 ]
+
 
 const router = new VueRouter({
   mode: 'history',
