@@ -31,22 +31,26 @@
       <button @click="createComment(commentData)" class="btn btn-success">댓글 달기</button>
     </div>
 
-    <ul>
-      <li v-for="(comment, idx) in review.comment_set" :key="idx">
-        {{ comment }}
-      </li>
-    </ul>
-
-
+    <div v-if="isCommented">
+      <ul>
+        <li v-for="(comment, idx) in notNestedComments" :key="idx">
+          <CommentItem :comment="comment"/>
+        </li>
+      </ul>
+    </div>
 
   </div>
 </template>
 
 <script>
 import {mapActions, mapGetters, mapState} from "vuex";
+import CommentItem from "@/components/boards/CommentItem";
 
 export default {
   name: "ReviewDetail",
+  components: {
+    CommentItem,
+  },
   data() {
     return {
       commentData: {
@@ -62,12 +66,15 @@ export default {
   },
   computed: {
     ...mapState({review: state => state.boards.selectedReview}),
-    ...mapGetters(['isReviewLiked'])
+    ...mapGetters(['isReviewLiked', 'notNestedComments']),
+    isCommented() {
+      return !!this.review.comment_set.length
+    },
   },
-  mounted() {
+  beforeMount() {
     this.commentData.movie = this.$route.params.movie_id
     this.commentData.review = this.$route.params.review_id
-    this.$store.dispatch('fetchReview', { movie: this.commentData.movie, review: this.commentData.review})
+    this.$store.dispatch('fetchReview', { movie: this.$route.params.movie_id, review: this.$route.params.review_id})
   }
 }
 </script>

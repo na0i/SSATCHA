@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .models import Review, Comment
-from .serializers import ReviewSerializer, CommentSerializer, ReviewLikeUserSerializer
+from .serializers import ReviewSerializer, CommentSerializer, ReviewLikeUserSerializer, CommentSetSerializer
 
 from movies.models import Movie
 
@@ -68,7 +68,8 @@ def create_comment(request, movie_pk, review_pk):
 
 # 댓글 수정, 삭제, 대댓글
 @api_view(['PUT', 'DELETE', 'POST'])
-def update_or_delete_comment(request, review_pk, comment_pk):
+@permission_classes([IsAuthenticated])
+def update_or_delete_or_recreate_comment(request, movie_pk, review_pk, comment_pk):
     review = get_object_or_404(Review, pk=review_pk)
     comment = get_object_or_404(Comment, pk=comment_pk)
 
@@ -98,7 +99,8 @@ def update_or_delete_comment(request, review_pk, comment_pk):
         serializer = CommentSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save(review=review, user=request.user, reply_to=comment)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            comment_set_serializer = CommentSetSerializer(review)
+            return Response(comment_set_serializer.data, status=status.HTTP_201_CREATED)
 
     # 권한 없는 사용자가 버튼을 클릭한 경우 리뷰페이지로 이동
     serializer = ReviewSerializer(review)

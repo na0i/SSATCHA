@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import {mapActions, mapGetters, mapState} from "vuex";
+import {mapActions, mapState} from "vuex";
 
 export default {
   name: "CreateReview",
@@ -52,12 +52,9 @@ export default {
   },
   computed: {
     ...mapState({selectedMovie: state => state.movies.selectedMovie}),
-    ...mapGetters(['getMovieId'])
   },
   mounted() {
-    if (this.getMovieId) {
-      this.reviewData.movie = this.getMovieId
-    }
+    this.reviewData.movie = this.$route.params.movie_id
   }
 }
 </script>
