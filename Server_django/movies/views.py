@@ -1,14 +1,19 @@
 from django.shortcuts import get_object_or_404, HttpResponseRedirect
+from django.http import JsonResponse
 from rest_framework.decorators import api_view
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
+
+from django.contrib.auth.models import User
 
 import pprint
 import requests
 
 from .models import Movie, Genre
 from .api_request import get_genre, save_movie, recommend_movies, get_movie_info, search, get_providers, get_genre_list
-from .serializers import GenreSerializer, MovieSerializer, MovieListSerializer
+from .serializers import GenreSerializer, MovieSerializer, MovieListSerializer, MovieLikeUserSerializer
 
 
 # 영화 장르 정보 가져오기
@@ -155,7 +160,11 @@ def movie_list_or_create(request):
 
 
 # 단일 영화 상세 페이지
-@api_view(['GET'])
+'''
+이거 없다면 추가하는 건 일단 다른 함수든 연결해야 할 것 같습니다. 
+애초에 영화 데이터 자체를 어드민만 추가할 수 있는게 명세라서 좀 더 고민이 필요해 보입니다. 
+'''
+@api_view(['GET', 'POST'])
 def get_or_create_movie(request, movie_pk):
     # DB에 없다면,
     if not Movie.objects.all().filter(pk=movie_pk):
@@ -167,3 +176,23 @@ def get_or_create_movie(request, movie_pk):
         movie = get_object_or_404(Movie, pk=movie_pk)
         serializer = MovieSerializer(movie)
         return Response(serializer.data)
+
+
+# 영화 좋아요
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def like_movie(request, movie_pk):
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    user = request.user
+
+    # 좋아요 취소
+    if movie.like_users.filter(username=user).exists():
+        movie.like_users.remove(user)
+
+    # 좋아요
+    else:
+        movie.like_users.add(user)
+
+    serializer = MovieLikeUserSerializer(movie)
+    return Response(serializer.data)
+

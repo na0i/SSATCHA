@@ -16,6 +16,13 @@
       작성일: {{ review.created_at }}
     </h4>
 
+    <span v-if="isReviewLiked">
+      <button @click="likeReview(commentData)" class="btn btn-secondary"> 리뷰 좋아요 취소 </button>
+    </span>
+    <span v-else>
+      <button @click="likeReview(commentData)" class="btn btn-danger"> 리뷰 좋아요 </button>
+    </span>
+
     <hr>
 
     <h3>댓글</h3>
@@ -51,19 +58,16 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['createComment'])
+    ...mapActions(['createComment', 'fetchReview', 'likeReview'])
   },
   computed: {
     ...mapState({review: state => state.boards.selectedReview}),
-    ...mapGetters(['getMovieId', 'getReviewId'])
+    ...mapGetters(['isReviewLiked'])
   },
   mounted() {
-    if (this.getMovieId) {
-      this.commentData.movie = this.getMovieId
-    }
-    if (this.$store.getters.getReviewId) {
-      this.commentData.review = this.getReviewId
-    }
+    this.commentData.movie = this.$route.params.movie_id
+    this.commentData.review = this.$route.params.review_id
+    this.$store.dispatch('fetchReview', { movie: this.commentData.movie, review: this.commentData.review})
   }
 }
 </script>
