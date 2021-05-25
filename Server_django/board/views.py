@@ -40,8 +40,10 @@ def read_or_update_or_delete_review(request, movie_pk, review_pk):
 
     # 리뷰 삭제
     elif request.method == 'DELETE':
+        # print(review.user, type(review.user), type(str(review.user)))
+        # print(request.data['username'], type(request.data['username']))
         # 작성자가 삭제..
-        if review.user == request.user:
+        if str(review.user) == request.data['username']:
             review.delete()
             data = {
                 'success': True,
