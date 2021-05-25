@@ -9,7 +9,7 @@ import ProfileView from '@/views/accounts/ProfileView.vue'
 import MovieIndexView from "@/views/movies/MovieIndexView";
 import MovieDetail from "@/components/MovieDetail";
 import CreateReview from "@/components/CreateReview";
-import ReviewDetail from "@/views/board /ReviewDetail";
+import ReviewDetail from "@/views/board/ReviewDetail";
 
 
 Vue.use(VueRouter)
