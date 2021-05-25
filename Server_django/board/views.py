@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, HttpResponseRedirect
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Review, Comment
@@ -12,12 +13,12 @@ User = get_user_model()
 
 # 리뷰 생성
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def create_review(request, movie_pk):
-    # user = get_object_or_404(User, pk=1)  생성되는지 보려고 한번 슈퍼유저로 해봤읍니다..
     movie = get_object_or_404(Movie, pk=movie_pk)
     serializer = ReviewSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
-        serializer.save(movie=movie, user=user)
+        serializer.save(movie=movie, user=request.user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
@@ -54,6 +55,7 @@ def read_or_update_or_delete_review(request, movie_pk, review_pk):
 
 # 댓글 생성
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def create_comment(request, movie_pk, review_pk):
     review = get_object_or_404(Review, pk=review_pk)
     serializer = CommentSerializer(data=request.data)
