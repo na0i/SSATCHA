@@ -4,28 +4,28 @@
       <p id="semititle" class="fw-bolder pt-1">TOP RATED</p>
       <div>
         <li class="row row-cols-6">
-          <MovieListItem v-for="movie in fetchTopRated" :key="`${movie.id}`" :movie="movie"/>
+          <MovieListItem v-for="movie in topRated" :key="`${movie.id}`" :movie="movie"/>
         </li>
       </div>
     </div>
 
     <p id="semititle" class="fw-bolder">POPULARITY</p>
     <ul>
-      <li v-for="movie in fetchPopularity" :key="`${movie.id}`">
+      <li v-for="movie in popular" :key="`${movie.id}`">
         <MovieListItem :movie="movie"/> {{ movie.popularity }}
       </li>
     </ul>
 
     <p id="semititle" class="fw-bolder">KOREAN MOVIES</p>
     <ul>
-      <li v-for="movie in fetchKorean" :key="`${movie.id}`">
+      <li v-for="movie in korean" :key="`${movie.id}`">
         <MovieListItem :movie="movie"/> {{ movie.vote_average }}
       </li>
     </ul>
 
     <p id="semititle" class="fw-bolder">1970-80 MOVIES</p>
     <ul>
-      <li v-for="movie in fetchClassic" :key="`${movie.id}`">
+      <li v-for="movie in classic" :key="`${movie.id}`">
         <MovieListItem :movie="movie"/> {{ movie.release_date }}
       </li>
     </ul>
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import {mapActions, mapGetters} from "vuex";
+import {mapState} from "vuex";
 import MovieListItem from "@/components/MovieListItem";
 
 export default {
@@ -48,18 +48,18 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['fetchMovies']),
     onClick() {
       this.$router.push(`/${this.movieId}`)
     }
   },
-
   computed: {
-    ...mapGetters(['fetchTopRated', 'fetchPopularity', 'fetchKorean', 'fetchClassic'])
+    ...mapState({
+      topRated: state => state.movies.recommendMovie.topRated,
+      popular: state => state.movies.recommendMovie.popular,
+      korean: state => state.movies.recommendMovie.korean,
+      classic: state => state.movies.recommendMovie.classic
+    }),
   },
-  created() {
-    this.fetchMovies()
-  }
 }
 </script>
 

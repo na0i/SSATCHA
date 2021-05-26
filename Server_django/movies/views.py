@@ -40,45 +40,71 @@ def get_genre_data(request):
 
 
 ### fetch initial datum
-@api_view(['POST'])
+@api_view(['POST', 'GET'])
 def fetch_initial_datum(request):
 
     # 관리자의 경우에만 최초 데이터 불러오기 가능
     # if request.user.is_superuser:
 
-    conditions = ['popular', 'top_rated']  # top_rated
+    # DB에 자료 저장
+    if request.method == 'POST':
+        conditions = ['popular', 'top_rated']  # top_rated
 
-    results = {
-        'success': 0,
-        'failed': [
-            0,
-            {
-                'title': []
-            }
-        ]
-    }
+        results = {
+            'success': 0,
+            'failed': [
+                0,
+                {
+                    'title': []
+                }
+            ]
+        }
 
-    # 인기순 100/
-    # 평점 높은 순 100/
-    for condition in conditions:
-        for i in range(1, 201):
-            datum = recommend_movies(condition, page=i)
-            for data in datum:
-                if data['popularity'] < 10:
-                    continue
+        # 인기순 100/
+        # 평점 높은 순 100/
+        for condition in conditions:
+            for i in range(1, 201):
+                datum = recommend_movies(condition, page=i)
+                for data in datum:
+                    if data['popularity'] < 10:
+                        continue
 
-                if data['vote_count'] < 30:
-                    continue
+                    if data['vote_count'] < 30:
+                        continue
 
-                movie_pk = data['id']
-                if not Movie.objects.all().filter(pk=movie_pk):
-                    save_movie(data)
-                    results['success'] += 1
-                else:
-                    results['failed'][0] += 1
-                    results['failed'][1]['title'].append(data['title'])
+                    movie_pk = data['id']
+                    if not Movie.objects.all().filter(pk=movie_pk):
+                        save_movie(data)
+                        results['success'] += 1
+                    else:
+                        results['failed'][0] += 1
+                        results['failed'][1]['title'].append(data['title'])
 
-    return Response(data=results)
+        return Response(data=results)
+
+    # vue에서 초기 목록 요청
+    elif request.method == 'GET':
+        movies = Movie.objects.all()
+
+        top_rated = movies.filter(vote_count__gt=300).order_by('-vote_average')[:24]
+        tr_serializer = MovieSerializer(top_rated, many=True)
+        popular = movies.order_by('-popularity')[:24]
+        pop_serializer = MovieSerializer(popular, many=True)
+        ko_top_rated = movies.filter(original_language='ko').order_by('-vote_average')[:24]
+        ko_serializer = MovieSerializer(ko_top_rated, many=True)
+        classic = movies.filter(release_date__range=["1970-01-01", "1998-01-01"]).order_by('-vote_average')[:24]
+        classic_serializer = MovieSerializer(classic, many=True)
+
+        data = [tr_serializer.data, pop_serializer.data, ko_serializer.data, classic_serializer.data]
+
+        content = {
+            'status': 1,
+            'responseCode': status.HTTP_200_OK,
+            'data': data,
+        }
+        return Response(content)
+
+
 
     # 관리자가 아닌 경우에는, 메인으로 이동
     # else:
@@ -154,8 +180,8 @@ def movie_list_or_create(request):
 
     # 전체 영화 리스트
     elif request.method == 'GET':
-        movies = Movie.objects.all()[:4000]
-        serializer = MovieSerializer(movies, many=True)
+        movies = Movie.objects.all()
+        serializer = MovieListSerializer(movies, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 

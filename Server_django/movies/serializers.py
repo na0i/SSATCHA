@@ -9,20 +9,6 @@ class GenreSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-# 전체 영화 목록
-# 만약 영화 리스트 화면에서 보이고 싶은 데이터가 추가적으로 존재하는 경우,
-# 여기서 필드에 추가해주면 되겠습니다.
-# 어찌되었든 추가작업이 필요할 거 같네용
-class MovieListSerializer(serializers.ModelSerializer):
-    title = serializers.CharField(max_length=100)
-    poster_path = serializers.CharField(min_length=1)
-
-    class Meta:
-        model = Movie
-        fields = ('title', 'poster_path')
-
-
-# 단일 영화
 class MovieSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField()
     title = serializers.CharField(max_length=100)
@@ -46,9 +32,27 @@ class MovieSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+# 단일 영화
 class MovieLikeUserSerializer(serializers.ModelSerializer):
     like_users = UserSerializer(many=True, read_only=True)
 
     class Meta:
         model = Movie
         fields = ('like_users', )
+
+
+# 전체 영화 목록
+# 만약 영화 리스트 화면에서 보이고 싶은 데이터가 추가적으로 존재하는 경우,
+# 여기서 필드에 추가해주면 되겠습니다.
+# 어찌되었든 추가작업이 필요할 거 같네용
+class MovieListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Movie
+        fields = ('title', 'id', 'original_title', )
+
+
+# class InitialMovieDataSerializer(serializers.ModelSerializer):
+#
+#
+# # 최초에 추천하는 영화랑 이런거 보내주는 시리얼라이져..
