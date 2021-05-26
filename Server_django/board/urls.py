@@ -4,9 +4,9 @@ import movies.views
 
 
 urlpatterns = [
-    # 전체 영화 조회 및 생성
+    # 전체 영화 조회 및 생성 -> 여기서 추천 기반 보내고
     path('', movies.views.movie_list_or_create),
-    # 최초 정보 등록
+    # 최초 정보 등록 -> get 으로 목록만 불러오기..
     path('initial_data/', movies.views.fetch_initial_datum),
     # 장르 정보 업데이트
     path('genres/', movies.views.get_genre_data),

@@ -1,11 +1,19 @@
 import axios from "axios";
-import _ from 'lodash'
+// import _ from 'lodash'
 // 장고 서버 url
 import DRF from '@/api/drf'
 
 
 const state = {
-  movies: [],
+  genres: [],
+  // movies: [],
+  movieList: [],
+  recommendMovie: {
+    topRated: [],
+    popular: [],
+    korean: [],  // 한국 영화 평점순
+    classic: [],
+  },
   selectedMovie: {},
   selectedMovieProviders: {
         buy: [],
@@ -16,23 +24,6 @@ const state = {
 
 
 const getters = {
-  fetchTopRated() {
-    return _.sortBy(state.movies.filter(movie => movie.vote_count > 300), 'vote_average').reverse().slice(0, 40)
-  },
-  fetchPopularity() {
-    return _.sortBy(state.movies, 'popularity').reverse().slice(0, 40)
-  },
-  fetchKorean() {
-    // 한국 영화 중에서 평점 높은 순 40개
-    return _.sortBy(state.movies.filter(movie => movie.original_language === 'ko'), 'vote_average').reverse().slice(0, 40)
-  },
-  fetchClassic() {
-    // 70~ 80 년대 영화 추천
-    return _.sortBy(state.movies.filter(movie => {
-      let regex = new RegExp('^197|^198')
-      return regex.test(movie.release_date)}, 'vote_average').reverse().slice(0, 40)
-    )
-  },
 
   // 유저가 좋아요 누른 영화인지 여부
   isMovieLiked(state, getters, rootState) {
@@ -46,9 +37,28 @@ const getters = {
 
 
 const mutations = {
-  SET_MOVIES: (state, movies) => {
-    state.movies = movies
+  /// 초기 세팅 ///
+  // DB 전체 영화 목록
+  SET_MOVIE_LIST: (state, movieList) => {
+    console.log(movieList)
+    state.movieList = movieList
   },
+  // 초기 화면에 들어가는 추천 영화들..
+  SET_TOP_RATED: (state, topRated) => {
+    state.recommendMovie.topRated = topRated
+  },
+  SET_POPULAR: (state, popular) => {
+    state.recommendMovie.popular = popular
+  },
+  SET_KOREAN: (state, korean) => {
+    state.recommendMovie.korean = korean
+  },
+  SET_CLASSIC: (state, classic) => {
+    state.recommendMovie.classic = classic
+  },
+  //^^^ 초기 세팅 ^^^//
+
+
   SET_MOVIE_DETAIL: (state, movie) => {
     // console.log(movie)
     state.selectedMovie = movie
@@ -79,14 +89,30 @@ const mutations = {
 
 
 const actions = {
-  // 초기 영화 데이터 가져오기
-  fetchMovies({commit}) {
-    axios.get(DRF.URL)
+  //// 초기 세팅 ////
+  // 1. 전체 영화 목록 불러오기 -> 제목, id만 가지고 있겠다 -> 검색에서 활용
+  // 2. 앞에 띄워주는
+  //  top_rated
+  //  popularity
+  //  한국영화
+  //  고전영화
+  fetchInitialDatum({commit}) {
+    // 2. 초기 화면 추천 영화
+    axios.get(DRF.URL + DRF.ROUTES.initial)
       .then(res => {
-        commit('SET_MOVIES', res.data)
+        commit('SET_TOP_RATED', res.data.data[0])
+        commit('SET_POPULAR', res.data.data[1])
+        commit('SET_KOREAN', res.data.data[2])
+        commit('SET_CLASSIC', res.data.data[3])
       })
       .catch(err => console.log(err))
+
+    // 1.
+    axios.get(DRF.URL)
+      .then(res => commit('SET_MOVIE_LIST', res.data))
+      .catch(err => console.log(err))
   },
+
 
   // 저장된 영화 정보 -> 리뷰 및 좋아요까지
   fetchMovieDetail({commit}, movieId) {

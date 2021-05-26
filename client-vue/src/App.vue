@@ -18,13 +18,17 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 
 export default {
   name: 'App',
   computed: {
-    ...mapGetters(['isLoggedIn', ])
+    ...mapGetters(['isLoggedIn', ]),
+    ...mapActions(['fetchInitialDatum'])
   },
+  created() {
+    this.fetchInitialDatum()
+  }
 }
 </script>
 
