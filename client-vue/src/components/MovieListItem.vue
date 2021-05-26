@@ -1,17 +1,21 @@
 <template>
   <div class="main-container">
-    <div class="movie-list">
-      <div class="movie-card mb-5 ms-1 me-1" @click="setMovieDetail(movie.id)">
+    <div class="movie-list mt-5 mb-5">
+      <div class="movie-card" @click="setMovieDetail(movie.id)">
         <RouterLink :to="`/${movie.id}`" class="card-text movietitle">
           <img :src="fullpath" alt="movieposter"/>
-          <div class="desc movietitle">
-            {{ movie.title }}
-            <p class="card-text movietitle">{{ movie.vote_average }}</p>
+          <div class="desc mt-1">
+            <span class="fw-bolder">{{ movie.title }}</span>
+            <br>
+            <p class="card-context justify-content:space-between">
+              <span>{{ movie.vote_average }}</span>     |     
+              <span>{{ movie.release_date }}</span>
+            </p>
           </div>
         </RouterLink>
       </div>
     </div>
-  </div>  
+  </div>
 </template>
 
 <script>
@@ -42,15 +46,9 @@ export default {
 }
 
 /* font css 시작 */
-@font-face {
-  font-family: 'Noto Sans KR', sans-serif;
-  src: url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@700&display=swap')
-}
-
 .movietitle {
-  font-family: Noto Sans KR, sans-serif;
-  font-size: 12px;
-  color: #b7d1eb;
+  font-size: 17px;
+  color: #ffffff;
   text-decoration: none;
   text-align: left;
 }
@@ -61,9 +59,9 @@ export default {
   background-color: #b2d7fa;
 }
 
-* {
+/* * {
   box-sizing: border-box;
-}
+} */
 
 .main-container {
   background-color: black;
@@ -74,9 +72,17 @@ export default {
   justify-content: center;
 }
 
+.card-context {
+  font-size: 14px;
+}
+
 .movie-card {
+  position: relative;
+  align-items: center;
+  justify-content: center;
   border-radius: 3px;
-  box-shadow: -1px 1px 8px #111111, 1px -1px 8px #111111;
+  box-shadow: -1px 1px 4px #111111, 1px -1px 4px #111111;
+  transition: all 0.5s;
   transition-duration: 300ms;
   height: 200px;
 }
@@ -87,10 +93,6 @@ export default {
   width: 100%;
   height: 100%;
 }
-/* .movie-card .desc {
-  padding: 0 1rem;
-} */
-/* card text에 padding 생김 */
 
 .movie-card:hover {
   background-color: #363636;
