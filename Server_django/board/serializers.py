@@ -20,8 +20,8 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ('content', 'replied_by', 'id', 'reply_to')
-        read_only_fields = ('replied_by', 'reply_to',)
+        fields = ('content', 'replied_by', 'id', 'reply_to', 'user', )
+        read_only_fields = ('replied_by', 'reply_to', 'user', )
 
 
 # 댓글 목록 반환

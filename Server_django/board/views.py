@@ -70,7 +70,6 @@ def create_comment(request, movie_pk, review_pk):
 
 # 댓글 수정, 삭제, 대댓글
 @api_view(['PUT', 'DELETE', 'POST'])
-@permission_classes([IsAuthenticated])
 def update_or_delete_or_recreate_comment(request, movie_pk, review_pk, comment_pk):
     review = get_object_or_404(Review, pk=review_pk)
     comment = get_object_or_404(Comment, pk=comment_pk)
@@ -78,23 +77,21 @@ def update_or_delete_or_recreate_comment(request, movie_pk, review_pk, comment_p
     # 댓글 수정
     if request.method == 'PUT':
         if comment.user == request.user:
-            serializer = CommentSerializer(instance=comment, data=request.data)
+            serializer = CommentSerializer(instance=comment, data=request.data['comment'])
             if serializer.is_valid(raise_exception=True):
-                if comment.reply_to:
-                    serializer.save(review=review, user=request.user, reply_to=comment.reply_to)
-                else:
-                    serializer.save(review=review, user=request.user)  # 수정할 때, 부모댓글 연결 어떻게 하죠..?
-                return Response(serializer.data, status=status.HTTP_200_OK)
+                serializer.save(review=review, user=request.user)
+                comment_set_serializer = CommentSetSerializer(review)
+                return Response(comment_set_serializer.data, status=status.HTTP_200_OK)
 
     # 댓글 삭제
     if request.method == 'DELETE':
-        if comment.user == request.user:
+        print('-----------------')
+        print(request.data)
+        print(comment.user)
+        if str(comment.user) == request.data['username']:
             comment.delete()
-            data = {
-                'success': True,
-                'message': '댓글이 성공적으로 삭제되었습니다.'
-            }
-            return Response(data=data, status=status.HTTP_204_NO_CONTENT)
+            comment_set_serializer = CommentSetSerializer(review)
+            return Response(comment_set_serializer.data, status=status.HTTP_200_OK)
 
     # 대댓글 생성
     if request.method == 'POST':
