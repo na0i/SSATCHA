@@ -31,7 +31,7 @@
     <h2> 리뷰 </h2>
 
     <ul v-if="reviews.length">
-      <li v-for="(review, idx) in reviews" :key="idx">
+      <li v-for="(review, idx) in reviews" :key="idx" @click="fetchReview(movies.selectedMovie.id, review.id)">
         <RouterLink :to="`/${movies.selectedMovie.id}/review/${review.id}/`">
           {{ review }}
         </RouterLink>
@@ -47,13 +47,20 @@ import {mapActions, mapState, mapGetters} from "vuex";
 export default {
   name: "MovieDetail",
   methods: {
-    ...mapActions(['likeMovie'])
+    ...mapActions(['likeMovie']),
+    fetchReview(movie, review) {
+      this.$store.dispatch('fetchReview', { movie: movie, review: review})
+    },
   },
   computed: {
     ...mapState(['movies']),
     ...mapGetters(['isMovieLiked']),
     reviews() {
+      if (this.movies.selectedMovie.reviews === undefined) {
+        return []
+      } else {
       return this.movies.selectedMovie.reviews
+      }
     }
   },
 }

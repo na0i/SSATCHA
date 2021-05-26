@@ -1,9 +1,14 @@
 <template>
   <div>
     <h1> Review Detail </h1>
-    <h3>
-      영화 제목: {{ review.movie.title }}
+    <h3 class="d-inline-block">
+      영화 제목:
     </h3>
+      <div @click="setMovieDetail(review.movie.id)" class="h3 d-inline-block">
+        <RouterLink :to="`/${review.movie.id}`">
+           {{ review.movie.title }}
+        </RouterLink>
+      </div>
 
     <h3>
       리뷰 제목: {{ review.title }}
@@ -53,7 +58,7 @@
 </template>
 
 <script>
-import {mapActions, mapGetters, mapState} from "vuex";
+import {mapActions, mapGetters, mapState } from "vuex";
 import CommentItem from "@/components/boards/CommentItem";
 
 export default {
@@ -63,6 +68,12 @@ export default {
   },
   data() {
     return {
+      review: {
+        movie: {
+          id: '',
+          title: '',
+        },
+      },
       commentData: {
         movie: '',
         review: '',
@@ -72,7 +83,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['createComment', 'fetchReview', 'likeReview']),
+    ...mapActions(['createComment', 'fetchReview', 'likeReview', 'setMovieDetail']),
     onSubmit() {
       this.commentData.content = ''
     },
@@ -83,20 +94,28 @@ export default {
       if (confirm('정말 삭제하시겠습니까?')) {
         this.$store.dispatch('deleteReview', this.review)
       }
-    }
-  },
-  computed: {
-    ...mapState({review: state => state.boards.selectedReview}),
-    ...mapGetters(['isReviewLiked', 'notNestedComments']),
-    isCommented() {
-      return !!this.review.comment_set.length
     },
   },
-  beforeMount() {
+  computed: {
+    ...mapState({selectedReview: state => state.boards.selectedReview}),
+    ...mapGetters(['isReviewLiked', 'notNestedComments', 'getMovieId']),
+    isCommented() {
+      return !!this.review.comment_set;
+    },
+  },
+  watch: {
+    '$store.state.boards.selectedReview': function() {
+        this.review = this.selectedReview
+    }
+  },
+  created() {
     this.commentData.movie = this.$route.params.movie_id
     this.commentData.review = this.$route.params.review_id
-    this.$store.dispatch('fetchReview', { movie: this.$route.params.movie_id, review: this.$route.params.review_id})
+    if (this.selectedReview) {
+      this.review = this.selectedReview
+    }
   },
+
 }
 </script>
 
