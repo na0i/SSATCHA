@@ -1,31 +1,29 @@
 <template>
-  <div>
-    <h1>
-    Movie Index
-    </h1>
-
-    <h1>Top Rated</h1>
-    <ul>
-        <li>
+  <div id="bg-color">
+    <div class="container">
+      <p id="semititle" class="fw-bolder pt-1">TOP RATED</p>
+      <div>
+        <li class="row row-cols-6">
           <MovieListItem v-for="movie in fetchTopRated" :key="`${movie.id}`" :movie="movie"/>
         </li>
-    </ul>
+      </div>
+    </div>
 
-    <h1>Popularity</h1>
+    <p id="semititle" class="fw-bolder">POPULARITY</p>
     <ul>
       <li v-for="movie in fetchPopularity" :key="`${movie.id}`">
         <MovieListItem :movie="movie"/> {{ movie.popularity }}
       </li>
     </ul>
 
-    <h1> 한국 영화 </h1>
+    <p id="semititle" class="fw-bolder">KOREAN MOVIES</p>
     <ul>
       <li v-for="movie in fetchKorean" :key="`${movie.id}`">
         <MovieListItem :movie="movie"/> {{ movie.vote_average }}
       </li>
     </ul>
 
-    <h1> 1970-1980 년대 영화 </h1>
+    <p id="semititle" class="fw-bolder">1970-80 MOVIES</p>
     <ul>
       <li v-for="movie in fetchClassic" :key="`${movie.id}`">
         <MovieListItem :movie="movie"/> {{ movie.release_date }}
@@ -66,5 +64,50 @@ export default {
 </script>
 
 <style scoped>
+@font-face {
+  font-family: 'Noto Sans KR', sans-serif;
+  src: url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@700&display=swap')
+}
 
+#title {
+  font-family: Noto Sans KR, sans-serif;
+  font-size: 30px;
+  color: #b7d1eb;
+}
+
+#semititle {
+  font-family: Noto Sans KR, sans-serif;
+  font-size: 22px;
+  color: white;
+  text-align: left;
+}
+
+#bg-color {
+  background-color: black;
+}
+
+.flux {
+  font-family: neon;
+  color: #3396f4;
+  text-shadow: 0 0 0vw #07143f;
+}
+
+.flux {
+  animation: flux 2s linear infinite;
+  -moz-animation: flux 2s linear infinite;
+  -webkit-animation: flux 2s linear infinite;
+  -o-animation: flux 2s linear infinite;
+}
+
+@keyframes flux {
+  0%,
+  100% {
+    text-shadow: 0 0 1vw #3396f4, 0 0 3vw #3396f4, 0 0 10vw #3396f4, 0 0 10vw #3396f4, 0 0 .4vw #242d35, .5vw .5vw .1vw #0d151d;
+    color: #28D7FE;
+  }
+  50% {
+    text-shadow: 0 0 .5vw #082180, 0 0 1.5vw #082180, 0 0 5vw #082180, 0 0 5vw #082180, 0 0 .2vw #082180, .5vw .5vw .1vw #0A3940;
+    color: #146C80;
+  }
+}
 </style>
