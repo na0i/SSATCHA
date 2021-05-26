@@ -5,7 +5,7 @@
         <a class="navbar-brand" href="/">
           <img src="@/assets/LOGO_KOR.png" alt="LOGO_KOR" width="168" height="35" class="d-inline-block align-text-top">
         </a>
-        <div class="justify-content-center neon">
+        <div class="justify-content-center">
           <RouterLink v-if="!isLoggedIn" :to="{ name: 'Signup' }">SIGNUP</RouterLink> |    
           <RouterLink v-if="!isLoggedIn" :to="{ name: 'Login' }">LOGIN</RouterLink>
           <RouterLink v-if="isLoggedIn" :to="{ name: 'Logout' }">LOGOUT | </RouterLink>

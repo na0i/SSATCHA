@@ -7,29 +7,31 @@
           <MovieListItem v-for="movie in fetchTopRated" :key="`${movie.id}`" :movie="movie"/>
         </li>
       </div>
+    
+      <p id="semititle" class="fw-bolder mt-5">POPULARITY</p>
+      <div>
+        <li class="row row-cols-6">
+          <MovieListItem v-for="movie in fetchPopularity" :key="`${movie.id}`" :movie="movie"/>
+          <!-- {{ movie.popularity }}  -->
+        </li>
+      </div>
+
+      <p id="semititle" class="fw-bolder mt-5">KOREAN MOVIES</p>
+      <div>
+        <li class="row row-cols-6">
+          <MovieListItem v-for="movie in fetchKorean" :key="`${movie.id}`" :movie="movie"/>
+          <!-- {{ movie.vote_average }} -->
+        </li>
+      </div>
+
+      <p id="semititle" class="fw-bolder mt-5">1970-80 MOVIES</p>
+      <div>
+        <li class="row row-cols-6">
+          <MovieListItem v-for="movie in fetchClassic" :key="`${movie.id}`" :movie="movie"/>
+          <!-- {{ movie.release_date }} -->
+        </li>
+      </div>
     </div>
-
-    <p id="semititle" class="fw-bolder">POPULARITY</p>
-    <ul>
-      <li v-for="movie in fetchPopularity" :key="`${movie.id}`">
-        <MovieListItem :movie="movie"/> {{ movie.popularity }}
-      </li>
-    </ul>
-
-    <p id="semititle" class="fw-bolder">KOREAN MOVIES</p>
-    <ul>
-      <li v-for="movie in fetchKorean" :key="`${movie.id}`">
-        <MovieListItem :movie="movie"/> {{ movie.vote_average }}
-      </li>
-    </ul>
-
-    <p id="semititle" class="fw-bolder">1970-80 MOVIES</p>
-    <ul>
-      <li v-for="movie in fetchClassic" :key="`${movie.id}`">
-        <MovieListItem :movie="movie"/> {{ movie.release_date }}
-      </li>
-    </ul>
-
   </div>
 </template>
 
@@ -64,19 +66,14 @@ export default {
 </script>
 
 <style scoped>
-@font-face {
-  font-family: 'Noto Sans KR', sans-serif;
-  src: url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@700&display=swap')
-}
-
 #title {
-  font-family: Noto Sans KR, sans-serif;
+  /* font-family: Noto Sans KR, sans-serif; */
   font-size: 30px;
   color: #b7d1eb;
 }
 
 #semititle {
-  font-family: Noto Sans KR, sans-serif;
+  /* font-family: Noto Sans KR, sans-serif; */
   font-size: 22px;
   color: white;
   text-align: left;
