@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h1>리뷰 작성</h1>
+    <h1 v-if="isUpdate">리뷰 수정</h1>
+    <h1 v-else> 리뷰 작성</h1>
 
     <h3>영화 제목 -> {{ selectedMovie.title }} </h3>
 
@@ -25,7 +26,10 @@
       <textarea v-model="reviewData.content" id="content" cols="30" rows="10"></textarea>
     </div>
 
-    <div>
+    <div v-if="isUpdate">
+      <button @click="updateReview(reviewData)"> 수정 완료 </button>
+    </div>
+    <div v-else>
       <button @click="createReview(reviewData)"> 작성 완료 </button>
     </div>
 
@@ -33,10 +37,10 @@
 </template>
 
 <script>
-import {mapActions, mapGetters, mapState} from "vuex";
+import {mapActions, mapState} from "vuex";
 
 export default {
-  name: "CreateReview",
+  name: "UpsertReview",
   data() {
     return {
       reviewData: {
@@ -44,19 +48,26 @@ export default {
         title: '',
         content: '',
         rank: 3,
-      }
+      },
     }
   },
   methods: {
-    ...mapActions(['createReview']),
+    ...mapActions(['createReview', 'updateReview']),
   },
   computed: {
     ...mapState({selectedMovie: state => state.movies.selectedMovie}),
-    ...mapGetters(['getMovieId'])
+    isUpdate () {
+      return this.$route.params.isUpdate
+    },
   },
   mounted() {
-    if (this.getMovieId) {
-      this.reviewData.movie = this.getMovieId
+    this.reviewData.movie = this.$route.params.movie_id
+    // 수정인 경우, 기본 데이터값들이 나올 수 있도록
+    if (this.$route.params.isUpdate) {
+      this.reviewData.title = this.$route.params.review.title
+      this.reviewData.content = this.$route.params.review.content
+      this.reviewData.rank = this.$route.params.review.rank
+      this.reviewData['review'] = this.$route.params.review.id
     }
   }
 }

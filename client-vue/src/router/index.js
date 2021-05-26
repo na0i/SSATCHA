@@ -8,7 +8,7 @@ import ProfileView from '@/views/accounts/ProfileView.vue'
 
 import MovieIndexView from "@/views/movies/MovieIndexView";
 import MovieDetail from "@/components/MovieDetail";
-import CreateReview from "@/components/CreateReview";
+import UpsertReview from "@/components/UpsertReview";
 import ReviewDetail from "@/views/board/ReviewDetail";
 
 
@@ -26,7 +26,7 @@ const routes = [
   // 영화 상세
   { path: '/:movie_id', name: 'MovieDetail', component: MovieDetail},
   // 리뷰 작성
-  { path: '/:movie_id/review/', name: 'CreateReview', component: CreateReview},
+  { path: '/:movie_id/review/', name: 'UpsertReview', component: UpsertReview},
   { path: '/:movie_id/review/:review_id', name: 'ReviewDetail', component: ReviewDetail},
 ]
 

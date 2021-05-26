@@ -1,7 +1,7 @@
 <template>
   <div class="main-container">
     <div class="movie-list">
-      <div class="movie-card mb-5 ms-1 me-1" @click="setMovieDetail(movie)">
+      <div class="movie-card mb-5 ms-1 me-1" @click="setMovieDetail(movie.id)">
         <RouterLink :to="`/${movie.id}`" class="card-text movietitle">
           <img :src="fullpath" alt="movieposter"/>
           <div class="desc movietitle">
