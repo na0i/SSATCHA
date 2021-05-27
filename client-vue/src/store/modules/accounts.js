@@ -42,8 +42,8 @@ const actions = {
         commit('SET_TOKEN', res.data.key)
         cookies.set('auth-token', res.data.key, '2d')
         dispatch('getLoginUser')
-        router.go(-1)
       })
+      router.push('/')
       .catch(err => {
         console.error(err.response.data)
       })
@@ -60,14 +60,15 @@ const actions = {
   //
   // },
 
-  // signup 하면 profile 등록 페이지로 이동 
-  signuppostAuthData({ commit }, { path, data }) {
+  // signup 하면 profile 등록 페이지로 이동
+  signuppostAuthData({ commit, dispatch }, { path, data }) {
     const FULL_URL_PATH = DRF.URL + path
     console.log(data)
     axios.post(FULL_URL_PATH, data)
       .then(res => {
         commit('SET_TOKEN', res.data.key)
         cookies.set('auth-token', res.data.key, '2d')
+        dispatch('getLoginUser')
       })
       router.push('/')
       .catch(err => {

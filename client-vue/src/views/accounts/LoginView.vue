@@ -17,12 +17,9 @@
                                     <input id="username" type="text" v-model="loginData.username" placeholder="username" required="" class="form-control rounded-pill border-0 shadow-sm px-4 text-primary">
                                 </div>
                                 <div class="form-group mb-3">
-                                    <input id="password1" type="password" v-model="loginData.password1" placeholder="password" required="" class="form-control rounded-pill border-0 shadow-sm px-4 text-primary">
+                                    <input id="password1" type="password" v-model="loginData.password" placeholder="password" required="" class="form-control rounded-pill border-0 shadow-sm px-4 text-primary">
                                 </div>
-                                <div class="button-set">
-                                  <SignupGenreSelect @like-genres="onSelect"/>
-                                </div>
-                                <button type="submit" @click="login(loginData)" class="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm">SIGN UP</button>
+                                <button type="submit" @click="login(loginData)" class="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm">LOGIN</button>
                               </form>
                           </div>
                       </div>
