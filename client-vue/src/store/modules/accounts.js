@@ -35,15 +35,15 @@ const actions = {
   },
 
   // login 하면 list 페이지로 이동
-  loginpostAuthData({ commit, dispatch }, { path, data }) {
+  loginpostAuthData({ commit }, { path, data }) {
     const FULL_URL_PATH = DRF.URL + path
     axios.post(FULL_URL_PATH, data)
       .then(res => {
         commit('SET_TOKEN', res.data.key)
         cookies.set('auth-token', res.data.key, '2d')
-        dispatch('getLoginUser')
+        // dispatch('getLoginUser')
       })
-      router.push('/')
+      // router.push('/')
       .catch(err => {
         console.error(err.response.data)
       })

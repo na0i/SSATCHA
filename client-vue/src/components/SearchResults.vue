@@ -10,7 +10,7 @@
 <script>
 // import {mapState} from "vuex";
 
-import MovieListItem from "@/components/MovieListItem";
+import MovieListItem from "@/components/movies/MovieListItem";
 
 export default {
   name: "SearchResults",

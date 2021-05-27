@@ -218,9 +218,26 @@ def search_movie(request):
 
 
 
+# tmdb 크롤링
+@api_view(['GET'])
+def get_provider_url(request, movie_pk):
+    # <QueryDict: {'method': ['flatrate'], 'provider': ['wavve']}>
+    # print(request.GET['method']) flatrate
+    method = request.GET['method']
+    provider = request.GET['provider']
 
+    link = get_providers(movie_pk, method, provider)
 
+    # if request.GET.method == 'flatrate':
+    # elif request.GET.method == 'buy':
+    #     link = get_providers(movie_pk, method, provider)
+    # elif request.GET.method == 'rent':
+    #     pass
 
+    data = {
+        'link': link
+    }
+    return Response(data)
 
 
 # 혹시 프로필 수정해서 좋아하는 장르 수정되면 이거 사용해주면 됩니다...

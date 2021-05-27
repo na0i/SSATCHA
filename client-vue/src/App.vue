@@ -12,8 +12,12 @@
             <span class="ms-5">
               <RouterLink v-if="!isLoggedIn" :to="{ name: 'Login' }">LOGIN</RouterLink>
             </span>
-            <RouterLink v-if="isLoggedIn" :to="{ name: 'Logout' }">LOGOUT | </RouterLink>
-            <RouterLink v-if="isLoggedIn" :to="{ name: 'Profile' }">PROFILE |</RouterLink>
+            <span class="ms-5">
+              <RouterLink v-if="isLoggedIn" :to="{ name: 'Profile' }">PROFILE </RouterLink>
+            </span>
+            <span class="ms-5">
+              <RouterLink v-if="isLoggedIn" :to="{ name: 'Logout' }">LOGOUT </RouterLink>
+            </span>
           </span>
         </a>
 
