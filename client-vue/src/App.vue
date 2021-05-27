@@ -32,7 +32,7 @@
 
 <script>
 import {mapActions, mapGetters} from 'vuex'
-import SearchBar from "@/components/SearchBar";
+import SearchBar from "@/components/SearchBar"
 
 export default {
   name: 'App',
