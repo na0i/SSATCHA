@@ -4,15 +4,15 @@
 
     <div v-if="isLoggedIn" class="profile">
       <br>
-      <span class="profile">안녕하세요  {{ loginUser.nickname }}님!</span> 
+      <div class="profile">안녕하세요  {{ loginUser.nickname }}님!</div> 
       <br>
-      <p class="profile">username: {{ loginUser.username}}</p>
+      <div class="profile">username: {{ loginUser.username}}</div>
       <hr>
-      <p class="profile">쌓은 리뷰들: {{ loginUser.my_reviews }}</p>
+      <div class="profile">쌓은 리뷰들: {{ loginUser.my_reviews }}</div>
       <hr>
-      <p class="profile">쌓인 영화들: {{ loginUser.like_movies }}</p>
+      <div class="profile">쌓인 영화들: {{ loginUser.like_movies }}</div>
       <hr>
-      <p class="profile">좋아한 리뷰 : {{ loginUser.like_reviews }}</p>
+      <div class="profile">좋아한 리뷰 : {{ loginUser.like_reviews }}</div>
       <hr>
       <div class="container" >
       <h2 id="semititle" class="fw-bolder m-3">{{ loginUser.nickname }} 님이 좋아하실만한 영화를 추천해드려요!</h2>
