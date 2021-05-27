@@ -34,25 +34,22 @@
       <div class="row">
         <!-- 사이트 연결 -->
         <div class="col-6">
-            <div>
-              <div class="sm-content">
-                <img src="@/assets/LOGO_VER1.png" width="20px" height="20px" class="m-1">스트리밍 : |
-                <span v-for="(provider, idx) in movies.selectedMovieProviders.flatrate" :key="idx" style="text-transform:uppercase">{{provider.provider_name}} | </span>
-              </div>
+          <div class="sm-content">
+            <div v-if="!!this.movies.selectedMovieProviders.flatrate.length">
+              <img  src="@/assets/LOGO_VER1.png" width="20px" height="20px" class="m-1">스트리밍 : 
+              <MovieProvider v-for="provider in this.movies.selectedMovieProviders.flatrate" :key="`f${provider.provider_id}`" :provider="provider" method="flatrate" style="text-transform:uppercase"/>
             </div>
-            <div>
-              <div class="sm-content">
-                <img src="@/assets/LOGO_VER1.png" width="20px" height="20px" class="m-1">구매하기 : |
-                <span v-for="(provider, idx) in movies.selectedMovieProviders.buy" :key="idx" style="text-transform:uppercase">{{provider.provider_name}} | </span>
-              </div>
+
+            <div v-if="!!this.movies.selectedMovieProviders.buy.length">
+              <img  src="@/assets/LOGO_VER1.png" width="20px" height="20px" class="m-1">구매하기 : 
+              <MovieProvider v-for="provider in this.movies.selectedMovieProviders.buy" :key="`b${provider.provider_id}`" :provider="provider" method="buy" style="text-transform:uppercase"/>
             </div>
-            <div>
-              <div class="sm-content">
-                <img src="@/assets/LOGO_VER1.png" width="20px" height="20px" class="m-1">대여하기 : |
-                <span v-for="(provider, idx) in movies.selectedMovieProviders.rent" :key="idx" style="text-transform:uppercase">{{provider.provider_name}} | 
-                </span>
-              </div>
+
+            <div v-if="!!this.movies.selectedMovieProviders.rent.length">
+              <img  src="@/assets/LOGO_VER1.png" width="20px" height="20px" class="m-1">대여하기 : 
+              <MovieProvider v-for="provider in this.movies.selectedMovieProviders.rent" :key="`r${provider.provider_id}`" :provider="provider" method="rent" style="text-transform:uppercase"/>
             </div>
+          </div>
         </div>
 
 
@@ -69,6 +66,7 @@
               이 영화 좋아요
               <img src="@/assets/LOGO_red.png" width="25vh" class="ms-2 me-5 sm-content likebtn">
             </div>
+            <br>
             <div class="review-router mt-1">
               <span class="me-3">이 영화에 대한 리뷰 쌓기</span>
               <RouterLink :to="`/${movies.selectedMovie.id}/review/`"><img src="@/assets/LOGO_VER1.png" width="25vh"></RouterLink>
@@ -76,43 +74,21 @@
           </div>
           <!-- 아니라면 로그인 페이지로 보내기 -->
           <div v-else>
-            <h5 class="review-alert"> 영화에 리뷰를 작성하거나 영화를 쌓으시려면 <a href="/accounts/login">로그인</a>하세요!</h5>
+            <h5 class="review-alert review-list"> 영화에 리뷰를 작성하거나 영화를 쌓으시려면 <a href="/accounts/login">로그인</a>하세요!</h5>
           </div>
         </div>
       </div>
 
       <hr>
       <!-- 리뷰 보여주기 -->
-      <ul v-if="reviews.length">
+      <ul v-if="reviews.length" class="review-list">
         <h2> 리뷰 </h2>
         <li v-for="(review, idx) in reviews" :key="idx" @click="fetchReview(movies.selectedMovie.id, review.id)">
           <RouterLink :to="`/${movies.selectedMovie.id}/review/${review.id}/`">
-            {{ review }}
+            {{ review.title }}
           </RouterLink>
         </li>
       </ul>
-
-      <hr>
-      <!-- 사이트 연결 -->
-      <div>
-        <div class="sm-content">
-          <div v-if="!!this.movies.selectedMovieProviders.flatrate.length">
-            <img  src="@/assets/LOGO_VER1.png" width="20px" height="20px" class="m-1">스트리밍 : |
-            <MovieProvider v-for="provider in this.movies.selectedMovieProviders.flatrate" :key="`f${provider.provider_id}`" :provider="provider" method="flatrate" style="text-transform:uppercase"/>
-          </div>
-
-          <div v-if="!!this.movies.selectedMovieProviders.buy.length">
-            <img  src="@/assets/LOGO_VER1.png" width="20px" height="20px" class="m-1">구매하기 : |
-            <MovieProvider v-for="provider in this.movies.selectedMovieProviders.buy" :key="`b${provider.provider_id}`" :provider="provider" method="buy" style="text-transform:uppercase"/>
-          </div>
-
-          <div v-if="!!this.movies.selectedMovieProviders.rent.length">
-            <img  src="@/assets/LOGO_VER1.png" width="20px" height="20px" class="m-1">대여하기 : |
-            <MovieProvider v-for="provider in this.movies.selectedMovieProviders.rent" :key="`r${provider.provider_id}`" :provider="provider" method="rent" style="text-transform:uppercase"/>
-          </div>
-        </div>
-      </div>
-
     </div>
   </div>
 </template>
@@ -202,5 +178,10 @@ export default {
 .review-router {
   position: relative;
   z-index: 101;
+}
+
+.review-list {
+  position: relative;
+  z-index: 102;
 }
 </style>

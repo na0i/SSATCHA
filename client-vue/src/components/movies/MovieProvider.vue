@@ -1,12 +1,12 @@
 <template>
-  <div class="d-inline-block my-1">
+  <div class="d-inline-block my-1 me-4 provider">
     <div>
 
       <a href="" target="_blank" @click.prevent="crawlingProvider(crawlingData)">
       <!--<a href="" target="_blank" @click.prevent="onClick">-->
         <img :src="fullpath" :alt="provider.provider_name" width="40px" height="40px">
       </a>
-      {{provider.provider_name}} |
+      {{provider.provider_name}}
     </div>
 
   </div>
@@ -53,5 +53,8 @@ export default {
 </script>
 
 <style scoped>
-
+.provider {
+  position: relative;
+  z-index: 101;
+}
 </style>
