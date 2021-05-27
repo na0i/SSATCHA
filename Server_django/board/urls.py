@@ -12,8 +12,10 @@ urlpatterns = [
     path('genres/', movies.views.get_genre_data),
     # 좋아요 누른 장르 정보 업데이트
     # path('genres/user/<int:user_pk>', movies.views.set_like_genres),
-    # 단일 영화 정보, post 요청이면서 superuser 아니면 좋아요..
+    # 단일 영화 정보
     path('<int:movie_pk>/', movies.views.get_or_create_movie),
+    # 영화 검색
+    path('search/', movies.views.search_movie),
     # 영화 좋아요
     path('<int:movie_pk>/likes/', movies.views.like_movie),
     # 리뷰 생성

@@ -12,10 +12,10 @@ export default {
     // movies
     initial: 'initial_data/',
     genres: 'genres/',
+    search: 'search/',
 
     // board
     review: 'review/',
-    // articles: 'board/articles/',
-    // article: `board/articles/`
+
   }
 }

@@ -2,6 +2,7 @@ import axios from "axios";
 // import _ from 'lodash'
 // 장고 서버 url
 import DRF from '@/api/drf'
+import router from "@/router";
 
 
 const state = {
@@ -14,12 +15,17 @@ const state = {
     korean: [],  // 한국 영화 평점순
     classic: [],
   },
+
+  // 영화 선택
   selectedMovie: {},
   selectedMovieProviders: {
         buy: [],
         flatrate: [],
         rent: [],
       },
+
+  // 검색 결과
+  searchResults: [],
 }
 
 
@@ -62,10 +68,12 @@ const mutations = {
   //^^^ 초기 세팅 ^^^//
 
 
+  // 영화 디테일 정보
   SET_MOVIE_DETAIL: (state, movie) => {
     // console.log(movie)
     state.selectedMovie = movie
   },
+  // 영화 어디서 볼 수 있나
   SET_PROVIDERS: (state, data) => {
     if (data === undefined) {
       state.selectedMovieProviders.buy = []
@@ -88,6 +96,11 @@ const mutations = {
   SET_MOVIE_LIKE_USERS(state, likeUsers) {
     state.selectedMovie.like_users = likeUsers
   },
+
+  // 검색
+  SET_SEARCH_RESULTS(state, results) {
+    state.searchResults = results
+  }
 }
 
 
@@ -144,6 +157,26 @@ const actions = {
       .then((res) => commit('SET_MOVIE_LIKE_USERS', res.data.like_users))
       .catch((err) => console.log(err))
   },
+
+  // 영화 검색
+  // ㅎ... url에 담아 보내기 싫어서 그냥 post...
+  // 시간 나면 고치겠슴미다..ㅠㅠ
+  searchMovie({commit}, query) {
+    // 뷰에서 처리해볼까요?
+    // let regex = new RegExp('query')
+    // // 만족하는 값이 하나라도 있으면 장고로 요청을 보낸다.
+    // if ( state.movieList.some(movie => {return regex.test(movie.title)})) {
+    //   axios.post(DRF.URL + DRF.ROUTES.search, query)
+    //     .then((res) => commit('SET_SEARCH_RESULTS', res.data))
+    //     .catch((err) => console.log(err))
+    // } else {
+      // tmdb로 바로 요청 보내기
+    const search_url = `https://api.themoviedb.org/3/search/movie?api_key=1f6f8f7d643eea003df9f19e38d13c3d&language=ko-KR&query=${query}&page=1&include_adult=False`
+    axios.get(search_url)
+      .then((res) => commit('SET_SEARCH_RESULTS', res.data.results))
+      .catch(err => console.log(err))
+    router.push({ name: 'SearchResults'})
+  }
 }
 
 
