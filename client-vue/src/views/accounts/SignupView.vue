@@ -60,15 +60,15 @@ export default {
         password2: '',
         email: '',
         nickname: '',
-        like_genres: [],
-      }
+        selected_genres: [],
+      },
     }
   },
   methods: {
     ...mapActions(['signup']),
     ...mapState({genreList: state => state.movies.genreList}), // ?? 왜 안대?
     onSelect(likeGenres) {
-      this.signupData.like_genres = likeGenres
+      this.signupData.selected_genres = likeGenres
     }
   }
 }
