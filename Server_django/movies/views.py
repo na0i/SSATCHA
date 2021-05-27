@@ -13,30 +13,40 @@ import requests
 
 from .models import Movie, Genre
 from .api_request import get_genre, save_movie, recommend_movies, get_movie_info, search, get_providers, get_genre_list
-from .serializers import GenreSerializer, MovieSerializer, MovieListSerializer, MovieLikeUserSerializer
+from movies.serializers.GenreSerializer import GenreSerializer
+from movies.serializers.MovieSerializer import MovieSerializer
+from movies.serializers.MovieListSerializer import MovieListSerializer
+from movies.serializers.MovieLikeUserSerializer import MovieLikeUserSerializer
 
 
-# 영화 장르 정보 가져오기
-@api_view(['POST'])
+@api_view(['POST', 'GET'])
 def get_genre_data(request):
-    datum = get_genre()
+    # 영화 장르 정보 불러오기
+    if request.method == 'POST':
+        datum = get_genre()
 
-    results = {
-        'saved': 0,
-        'failed': 0,
-    }
+        results = {
+            'saved': 0,
+            'failed': 0,
+        }
 
-    for data in datum:
-        if not Genre.objects.all().filter(pk=data['id']).exists():
-            serializer = GenreSerializer(data=data)
-            # if serializer.is_valid(raise_exception=True):
-            if serializer.is_valid():
-                serializer.save()
-                results['saved'] += 1
-            else:
-                results['failed'] += 1
+        for data in datum:
+            if not Genre.objects.all().filter(pk=data['id']).exists():
+                serializer = GenreSerializer(data=data)
+                # if serializer.is_valid(raise_exception=True):
+                if serializer.is_valid():
+                    serializer.save()
+                    results['saved'] += 1
+                else:
+                    results['failed'] += 1
 
-    return Response(data=results)
+        return Response(data=results)
+
+    # 영화 장르 정보 뷰에 저장
+    elif request.method == 'GET':
+        genres = Genre.objects.all()
+        serializer = GenreSerializer(genres, many=True)
+        return Response(serializer.data)
 
 
 ### fetch initial datum

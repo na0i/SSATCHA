@@ -14,27 +14,49 @@
       <input v-model="signupData.password2" id="password2" type="password" />
     </div>
     <div>
+      <label for="email">email:</label>
+      <input v-model="signupData.email" id="email" type="text" />
+    </div>
+    <div>
+      <label for="nickname">nickname:</label>
+      <input v-model="signupData.nickname" id="nickname" type="text" />
+    </div>
+    <br>
+      <SignupGenreSelect @like-genres="onSelect"/>
+    <br>
+    <div>
       <button @click="signup(signupData)">Signup</button>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import {mapActions, mapState} from 'vuex'
+import SignupGenreSelect from "@/components/accounts/SignupGenreSelect";
 
 export default {
   name: 'SignupView',
+  components: {
+    SignupGenreSelect
+  },
   data() {
     return {
       signupData: {
-        username: null,
-        password1: null,
-        password2: null,
+        username: '',
+        password1: '',
+        password2: '',
+        email: '',
+        nickname: '',
+        like_genres: [],
       }
     }
   },
   methods: {
-    ...mapActions(['signup'])
+    ...mapActions(['signup']),
+    ...mapState({genreList: state => state.movies.genreList}), // ?? 왜 안대?
+    onSelect(likeGenres) {
+      this.signupData.like_genres = likeGenres
+    }
   }
 }
 </script>

@@ -1,6 +1,17 @@
 from rest_framework import serializers
 from .models import Genre, Movie
-from accounts.serializers import UserSerializer
+try:
+    from accounts.serializers import UserSerializer
+except ImportError:
+    import sys
+    UserSerializer = sys.modules[__package__ + '.UserSerializer']
+
+try:
+    from board.serializers import ReviewListSerializer
+except ImportError:
+    import sys
+    ReviewListSerializer = sys.modules[__package__ + '.ReviewListSerializer']
+
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -19,11 +30,6 @@ class MovieSerializer(serializers.ModelSerializer):
     genres = GenreSerializer(many=True, required=False)
     like_users = UserSerializer(many=True, read_only=True)
     # 리뷰의 경우 null 가능하도록 해야 하나요?
-    try:
-        from board.serializers import ReviewListSerializer
-    except ImportError:
-        import sys
-        ReviewListSerializer = sys.modules[__package__ + '.ReviewListSerializer']
     reviews = ReviewListSerializer(many=True, read_only=True)
 
     class Meta:

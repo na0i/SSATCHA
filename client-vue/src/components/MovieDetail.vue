@@ -2,14 +2,22 @@
   <div>
     <h1> Movie Detail </h1>
 
-    <RouterLink :to="`/${movies.selectedMovie.id}/review/`" class=" btn btn-primary"> 리뷰 작성 </RouterLink>
+    <div v-if="isLoggedIn">
+      <RouterLink :to="`/${movies.selectedMovie.id}/review/`" class=" btn btn-primary"> 리뷰 작성 </RouterLink>
 
-    <span v-if="isMovieLiked">
-      <button @click="likeMovie(movies.selectedMovie.id)" class="btn btn-secondary"> 좋아요 취소 </button>
-    </span>
-    <span v-else>
-      <button @click="likeMovie(movies.selectedMovie.id)" class="btn btn-danger"> 좋아요 </button>
-    </span>
+      <span v-if="isMovieLiked">
+        <button @click="likeMovie(movies.selectedMovie.id)" class="btn btn-secondary"> 좋아요 취소 </button>
+      </span>
+      <span v-else>
+        <button @click="likeMovie(movies.selectedMovie.id)" class="btn btn-danger"> 좋아요 </button>
+      </span>
+    </div>
+
+    <div v-else>
+      <h4> 영화에 리뷰를 작성하거나 영화를 쌓으시려면 <a href="/accounts/login">로그인</a>하세요!</h4>
+    </div>
+
+
     <hr>
 
     <h3>
@@ -54,14 +62,15 @@ export default {
   },
   computed: {
     ...mapState(['movies']),
-    ...mapGetters(['isMovieLiked']),
+    ...mapGetters(['isMovieLiked', ]),
+    ...mapGetters(['isLoggedIn']),
     reviews() {
       if (this.movies.selectedMovie.reviews === undefined) {
         return []
       } else {
       return this.movies.selectedMovie.reviews
       }
-    }
+    },
   },
 }
 </script>
