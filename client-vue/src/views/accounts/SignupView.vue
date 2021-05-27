@@ -28,7 +28,7 @@
                                 <div class="form-group mb-1 pb-1">
                                     <input id="password2" type="password" v-model="signupData.password2" placeholder="confirm password" required="" class="form-control border-0 shadow-sm px-4 text-primary">
                                 </div>
-                                <div class="button-set mt-2 mb-2">
+                                <div class="button-set mt-2 mb-2 ">
                                   <SignupGenreSelect @like-genres="onSelect"/>
                                 </div>
                                 <button type="submit" @click="signup(signupData)" class="btn-sm btn-block btn-outline-primary mb-2 px-5 clickbtn">WELCOME to SSATCHA WORLD!</button>

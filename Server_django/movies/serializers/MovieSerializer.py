@@ -15,7 +15,7 @@ class MovieSerializer(serializers.ModelSerializer):
     poster_path = serializers.CharField(max_length=200, required=False, allow_blank=True)
     backdrop_path = serializers.CharField(max_length=200, required=False, allow_null=True, allow_blank=True)
     original_language = serializers.CharField(max_length=50, required=False, allow_blank=True)
-    genres = GenreSerializer(many=True, required=False)
+    genres = GenreSerializer(many=True, required=False, read_only=True)
     like_users = UserSerializer(many=True, read_only=True)
     reviews = ReviewListSerializer(many=True, read_only=True)
 
