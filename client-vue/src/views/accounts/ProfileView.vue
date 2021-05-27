@@ -3,20 +3,16 @@
     <h1>Profile</h1>
 
     <div v-if="isLoggedIn" class="profile">
-      로그인 ok
-        <h3>여기는 이제 프로필 다 만들었을 때 보이는 화면</h3>
-        -> 닉네임이랑, 좋아요 누른 리뷰, 좋아요 누른 영화 목록 보여주고,
-        -> 그거에 기반한 추천 대충 몇가지..
       <br>
-      닉네임: {{ loginUser.nickname }}
+      <span class="profile">안녕하세요  {{ loginUser.nickname }}님!</span> 
       <br>
-      username: {{ loginUser.username}}
+      <p class="profile">username: {{ loginUser.username}}</p>
       <hr>
-      작성한 리뷰: {{ loginUser.my_reviews }}
+      <p class="profile">쌓은 리뷰들: {{ loginUser.my_reviews }}</p>
       <hr>
-      좋아한 영화 : {{ loginUser.like_movies }}
+      <p class="profile">쌓인 영화들: {{ loginUser.like_movies }}</p>
       <hr>
-      좋아한 리뷰 : {{ loginUser.like_reviews }}
+      <p class="profile">좋아한 리뷰 : {{ loginUser.like_reviews }}</p>
       <hr>
       <div class="container" >
       <h2 id="semititle" class="fw-bolder m-3">{{ loginUser.nickname }} 님이 좋아하실만한 영화를 추천해드려요!</h2>
