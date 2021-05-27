@@ -92,7 +92,7 @@ export default {
 }
 
 .bg-image {
-  background-image: url('../assets/accounts_bg.jpg');
+  background-image: url("../../assets/accounts_bg.jpg");
   background-size: cover;
   background-position: center;
 }
