@@ -4,9 +4,10 @@
       <div class="container-fluid">
         <a class="navbar-brand" href="/">
           <img src="@/assets/LOGO_KOR.png" alt="LOGO_KOR" width="168" height="35" class="d-inline-block ms-1 align-self-center">
+
           <span class="ms-4">
             <span class="ms-5">
-              <RouterLink v-if="!isLoggedIn" :to="{ name: 'Signup' }">SIGNUP</RouterLink> 
+              <RouterLink v-if="!isLoggedIn" :to="{ name: 'Signup' }">SIGNUP</RouterLink>
             </span>
             <span class="ms-5">
               <RouterLink v-if="!isLoggedIn" :to="{ name: 'Login' }">LOGIN</RouterLink>
@@ -15,6 +16,10 @@
             <RouterLink v-if="isLoggedIn" :to="{ name: 'Profile' }">PROFILE |</RouterLink>
           </span>
         </a>
+
+          <div >
+            <SearchBar/>
+          </div>
       </div>
     </nav>
     <RouterView/>
@@ -23,9 +28,13 @@
 
 <script>
 import {mapActions, mapGetters} from 'vuex'
+import SearchBar from "@/components/SearchBar";
 
 export default {
   name: 'App',
+  components: {
+    SearchBar
+  },
   computed: {
     ...mapGetters(['isLoggedIn', ]),
     ...mapActions(['fetchInitialDatum'])
