@@ -1,6 +1,8 @@
 <template>
   <div>
     <h1> Movie Detail </h1>
+    <h5> {{ movies.selectedMovie }} </h5>
+    <img :src="fullpath" height="300vh" alt="movieposter"/>
 
     <div v-if="isLoggedIn">
       <RouterLink :to="`/${movies.selectedMovie.id}/review/`" class=" btn btn-primary"> 리뷰 작성 </RouterLink>
@@ -71,6 +73,9 @@ export default {
       return this.movies.selectedMovie.reviews
       }
     },
+    fullpath(){
+      return "https://image.tmdb.org/t/p/original/" + this.movies.selectedMovie.poster_path
+    }
   },
 }
 </script>

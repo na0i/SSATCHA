@@ -1,11 +1,11 @@
 <template>
-  <div>
-    <div v-for="(genre, idx) in this.$store.state.movies.genreList" :key="idx">
-      <input type="checkbox" v-model="likeGenres" :value="genre" @click="onChange(genre)"> {{ genre.name }}
-    </div>
-    {{likeGenres}}
-  </div>
-
+  <span>
+    <span v-for="(genre, idx) in this.$store.state.movies.genreList" :key="idx">
+      {{ genre.name }}
+      <input type="checkbox" v-model="likeGenres" :value="genre" @click="onChange(genre)" class="mt-1"> 
+    </span>
+    <!-- {{likeGenres}} -->
+  </span>
 </template>
 
 <script>
@@ -44,5 +44,41 @@ export default {
 </script>
 
 <style scoped>
+input[type=checkbox] {
+  appearance: none;
+  width: 40px;
+  height: 16px;
+  border: 1px solid #aaa;
+  border-radius: 2px;
+  background: #ebebeb;
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: middle;
+  transition: background 0.3s;
+  box-sizing: border-box;
+}
 
+input[type=checkbox]:after {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 14px;
+  height: 14px;
+  background: white;
+  border: 1px solid #aaa;
+  border-radius: 2px;
+  transition: left 0.1s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+}
+
+input[type=checkbox]:checked {
+  background: #a6c7ff;
+  border-color: #8daee5;
+}
+
+input[type=checkbox]:checked:after {
+  left: 23px;
+  border-color: #8daee5;
+}
 </style>
