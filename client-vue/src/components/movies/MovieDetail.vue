@@ -91,16 +91,41 @@
           </RouterLink>
         </li>
       </ul>
-      
+
+      <hr>
+      <!-- 사이트 연결 -->
+      <div>
+        <div class="sm-content">
+          <div v-if="!!this.movies.selectedMovieProviders.flatrate.length">
+            <img  src="@/assets/LOGO_VER1.png" width="20px" height="20px" class="m-1">스트리밍 : |
+            <MovieProvider v-for="provider in this.movies.selectedMovieProviders.flatrate" :key="`f${provider.provider_id}`" :provider="provider" method="flatrate" style="text-transform:uppercase"/>
+          </div>
+
+          <div v-if="!!this.movies.selectedMovieProviders.buy.length">
+            <img  src="@/assets/LOGO_VER1.png" width="20px" height="20px" class="m-1">구매하기 : |
+            <MovieProvider v-for="provider in this.movies.selectedMovieProviders.buy" :key="`b${provider.provider_id}`" :provider="provider" method="buy" style="text-transform:uppercase"/>
+          </div>
+
+          <div v-if="!!this.movies.selectedMovieProviders.rent.length">
+            <img  src="@/assets/LOGO_VER1.png" width="20px" height="20px" class="m-1">대여하기 : |
+            <MovieProvider v-for="provider in this.movies.selectedMovieProviders.rent" :key="`r${provider.provider_id}`" :provider="provider" method="rent" style="text-transform:uppercase"/>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
 
 <script>
+import MovieProvider from "@/components/movies/MovieProvider";
 import {mapActions, mapState, mapGetters} from "vuex";
 
 export default {
   name: "MovieDetail",
+  components: {
+    MovieProvider
+  },
   methods: {
     ...mapActions(['likeMovie']),
     fetchReview(movie, review) {

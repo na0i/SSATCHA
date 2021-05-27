@@ -14,6 +14,8 @@ urlpatterns = [
     # path('genres/user/<int:user_pk>', movies.views.set_like_genres),
     # 단일 영화 정보
     path('<int:movie_pk>/', movies.views.get_or_create_movie),
+    # 영화 사이트 연결
+    path('<int:movie_pk>/provider/', movies.views.get_provider_url),
     # 영화 검색
     path('search/', movies.views.search_movie),
     # 영화 좋아요

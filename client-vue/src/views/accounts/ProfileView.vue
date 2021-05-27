@@ -44,7 +44,8 @@ export default {
   created() {
     // 그냥 가지고만 있으면, 프로필 들어올 때마다 처음 받아본 데이터만 가지고 있네요
     // 매번 업데이트 해주겠습니다.
-    this.getLoginUser()
+    // this.profileSetting()
+    // getLoginUser()
   }
 }
 </script>
