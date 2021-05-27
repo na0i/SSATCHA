@@ -5,7 +5,7 @@ import DRF from '@/api/drf'
 
 
 const state = {
-  genres: [],
+  genreList: [],
   // movies: [],
   movieList: [],
   recommendMovie: {
@@ -28,7 +28,7 @@ const getters = {
   // 유저가 좋아요 누른 영화인지 여부
   isMovieLiked(state, getters, rootState) {
     if (state.selectedMovie.like_users) {
-      return !!state.selectedMovie.like_users.filter(user => user.id === rootState.accounts.loginUser.pk).length
+      return !!state.selectedMovie.like_users.filter(user => user.id === rootState.accounts.loginUser.id).length
     } else {
       return false
     }
@@ -38,9 +38,12 @@ const getters = {
 
 const mutations = {
   /// 초기 세팅 ///
+  // 장르 목록
+  SET_GENRE_LIST: (state, genres) => {
+    state.genreList = genres
+  },
   // DB 전체 영화 목록
   SET_MOVIE_LIST: (state, movieList) => {
-    console.log(movieList)
     state.movieList = movieList
   },
   // 초기 화면에 들어가는 추천 영화들..
@@ -107,9 +110,14 @@ const actions = {
       })
       .catch(err => console.log(err))
 
-    // 1.
+    // 1. 영화 전체 목록
     axios.get(DRF.URL)
       .then(res => commit('SET_MOVIE_LIST', res.data))
+      .catch(err => console.log(err))
+
+    // 전체 장르
+    axios.get(DRF.URL + DRF.ROUTES.genres)
+      .then(res => commit('SET_GENRE_LIST', res.data))
       .catch(err => console.log(err))
   },
 

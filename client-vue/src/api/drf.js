@@ -11,6 +11,7 @@ export default {
 
     // movies
     initial: 'initial_data/',
+    genres: 'genres/',
 
     // board
     review: 'review/',

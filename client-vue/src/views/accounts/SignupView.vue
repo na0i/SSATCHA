@@ -6,7 +6,6 @@
         <!-- The content half -->
         <div class="col-md-6 bg-light">
             <div class="login d-flex align-items-center py-5">
-
                 <!-- Demo content-->
                 <div class="container">
                     <div class="row">
@@ -17,8 +16,11 @@
                                 <div class="form-group mb-3">
                                     <input id="username" type="text" v-model="signupData.username" placeholder="USERNAME" required="" class="form-control rounded-pill border-0 shadow-sm px-4 text-primary">
                                 </div>
+                               <div class="form-group mb-3">
+                                    <input id="nickname" type="text" v-model="signupData.nickname" placeholder="USERNAME" required="" class="form-control rounded-pill border-0 shadow-sm px-4 text-primary">
+                                </div>
                                 <div class="form-group mb-3">
-                                    <input id="inputEmail" type="email" placeholder="EMAIL" required="" autofocus="" class="form-control rounded-pill border-0 shadow-sm px-4">
+                                    <input id="email" type="email" v-model="signupData.email" placeholder="EMAIL" required="" autofocus="" class="form-control rounded-pill border-0 shadow-sm px-4">
                                 </div>
                                 <div class="form-group mb-3">
                                     <input id="password1" type="password" v-model="signupData.password1" placeholder="PASSWORD" required="" class="form-control rounded-pill border-0 shadow-sm px-4 text-primary">
@@ -26,7 +28,11 @@
                                 <div class="form-group mb-3">
                                     <input id="password2" type="password" v-model="signupData.password2" placeholder="PASSWORD2" required="" class="form-control rounded-pill border-0 shadow-sm px-4 text-primary">
                                 </div>
+                                <br>
+                                  <SignupGenreSelect @like-genres="onSelect"/>
+                                <br>
                                 <button type="submit" @click="signup(signupData)" class="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm">SIGN UP</button>
+                                
                             </form>
                         </div>
                     </div>
@@ -40,21 +46,32 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import {mapActions, mapState} from 'vuex'
+import SignupGenreSelect from "@/components/accounts/SignupGenreSelect";
 
 export default {
   name: 'SignupView',
+  components: {
+    SignupGenreSelect
+  },
   data() {
     return {
       signupData: {
-        username: null,
-        password1: null,
-        password2: null,
+        username: '',
+        password1: '',
+        password2: '',
+        email: '',
+        nickname: '',
+        like_genres: [],
       }
     }
   },
   methods: {
-    ...mapActions(['signup'])
+    ...mapActions(['signup']),
+    ...mapState({genreList: state => state.movies.genreList}), // ?? 왜 안대?
+    onSelect(likeGenres) {
+      this.signupData.like_genres = likeGenres
+    }
   }
 }
 </script>

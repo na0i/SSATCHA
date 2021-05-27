@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 from django.shortcuts import get_object_or_404
 from .models import Movie
-from .serializers import MovieSerializer
+from movies.serializers.MovieSerializer import MovieSerializer
 
 
 

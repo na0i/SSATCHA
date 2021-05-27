@@ -31,7 +31,7 @@ export default {
     ...mapActions(['fetchInitialDatum'])
   },
   created() {
-    this.fetchInitialDatum()
+    this.fetchInitialDatum
   }
 }
 </script>
