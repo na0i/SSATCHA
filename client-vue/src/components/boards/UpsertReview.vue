@@ -1,37 +1,40 @@
 <template>
-  <div>
-    <h1 v-if="isUpdate">리뷰 수정</h1>
-    <h1 v-else> 리뷰 작성</h1>
+  <div class="upsertreview">
+    <div class="d-flex justify-content-between">
+      <div>
+        <h5 v-if="isUpdate" class="review">리뷰 수정</h5>
+        <h5 v-else class="review"> 리뷰 작성</h5>
 
-    <h3>영화 제목 -> {{ selectedMovie.title }} </h3>
+        <h4 class="review-title">{{ selectedMovie.title }} </h4>
+      </div>
+      <div class="box">
+        <!-- <label for="rank" class="me-4"> 점수 매기기 : </label> -->
+        <select id="rank" v-model="reviewData.rank">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </div>      
+    </div>    
 
-    <span>
-      <label for="title">Review Title: </label>
-      <input v-model="reviewData.title" id="title" type="text" />
+    <div class="form_group field">
+      <input type="text" v-model="reviewData.title" class="form_field" placeholder="Review Title" name="name" id='name' required />
+      <label for="name" class="form_label">리뷰 제목을 입력하세요. </label>
+    </div>
+
+    <div class="form_group field">
+      <textarea v-model="reviewData.content" id="content" rows="5" placeholder="Review Content" content="content" class="form_field" required></textarea>
+      <label for="content" class="form_label">리뷰 내용을 입력하세요. </label>
+    </div>
+
+    <span v-if="isUpdate">
+      <button @click="updateReview(reviewData)" class="btn btn-primary"> 수정 완료 </button>
     </span>
-
-    <span>
-      <label for="rank"> Movie Rank: </label>
-      <select id="rank" v-model="reviewData.rank">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-      </select>
+    <span v-else>
+      <button @click="createReview(reviewData)" class="btn btn-primary"> 작성 완료 </button>
     </span>
-
-    <div>
-      <label for="content">Review Content: </label>
-      <textarea v-model="reviewData.content" id="content" cols="30" rows="10"></textarea>
-    </div>
-
-    <div v-if="isUpdate">
-      <button @click="updateReview(reviewData)"> 수정 완료 </button>
-    </div>
-    <div v-else>
-      <button @click="createReview(reviewData)"> 작성 완료 </button>
-    </div>
 
   </div>
 </template>
@@ -74,5 +77,130 @@ export default {
 </script>
 
 <style scoped>
+.upsertreview {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+
+  font-family: 'Noto Sans KR', sans-serif;
+  color: aliceblue;
+}
+/* 리뷰 작성 or 수정 */
+.review {
+  font-weight: 200;
+}
+
+.review-title {
+  color: #3396f4;
+}
+
+/* select button 시작 */
+.box {
+  position: relative;
+  transform: translate(-50%, -50%);
+}
+
+.box select {
+  background-color: #0563af;
+  color: white;
+  padding: 12px;
+  width: 250px;
+  border: none;
+  font-size: 20px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+  -webkit-appearance: button;
+  appearance: button;
+  outline: none;
+}
+
+.box::before {
+  content: "\f13a";
+  font-family: FontAwesome;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20%;
+  height: 100%;
+  text-align: center;
+  font-size: 28px;
+  line-height: 45px;
+  color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+}
+
+.box:hover::before {
+  color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.box select option {
+  padding: 30px;
+}
+/* select button 끝 */
+
+/* input form css 시작 */
+.form_group {
+  position: relative;
+  padding: 15px 0 0;
+  margin-top: 10px;
+  width: 50%;
+}
+
+.form_field {
+  font-family: inherit;
+  width: 100%;
+  border: 0;
+  border-bottom: 2px solid #9b9b9b;
+  outline: 0;
+  font-size: 1.3rem;
+  color: #fff;
+  padding: 7px 0;
+  background: transparent;
+  transition: border-color 0.2s;
+}
+.form_field::placeholder {
+  color: transparent;
+}
+.form_field:placeholder-shown ~ .form_label {
+  font-size: 1.3rem;
+  cursor: text;
+  top: 20px;
+}
+
+.form_label {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: #9b9b9b;
+}
+
+.form_field:focus {
+  padding-bottom: 6px;
+  font-weight: 700;
+  border-width: 3px;
+  border-image: linear-gradient(to right, #3396f4, #33eef4);
+  border-image-slice: 1;
+}
+.form_field:focus ~ .form_label {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: #3396f4;
+  font-weight: 700;
+}
+
+/* reset input */
+.form_field:required, .form_field:invalid {
+  box-shadow: none;
+}
+
+/* input form css 끝 */
 
 </style>

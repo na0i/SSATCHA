@@ -28,22 +28,60 @@
           </div>
         </div>
       </div>
-      <hr>
-      <!-- 로그인했으면 리뷰작성 -->
-      <div v-if="isLoggedIn">
-        <RouterLink :to="`/${movies.selectedMovie.id}/review/`" class=" btn btn-primary"> 리뷰 작성 </RouterLink>
 
-        <span v-if="isMovieLiked">
-          <button @click="likeMovie(movies.selectedMovie.id)" class="btn btn-secondary"> 좋아요 취소 </button>
-        </span>
-        <span v-else>
-          <button @click="likeMovie(movies.selectedMovie.id)" class="btn btn-danger"> 좋아요 </button>
-        </span>
+      <hr>
+
+      <div class="row">
+        <!-- 사이트 연결 -->
+        <div class="col-6">
+            <div>
+              <div class="sm-content">
+                <img src="@/assets/LOGO_VER1.png" width="20px" height="20px" class="m-1">스트리밍 : |
+                <span v-for="(provider, idx) in movies.selectedMovieProviders.flatrate" :key="idx" style="text-transform:uppercase">{{provider.provider_name}} | </span>
+              </div>
+            </div>
+            <div>
+              <div class="sm-content">
+                <img src="@/assets/LOGO_VER1.png" width="20px" height="20px" class="m-1">구매하기 : |
+                <span v-for="(provider, idx) in movies.selectedMovieProviders.buy" :key="idx" style="text-transform:uppercase">{{provider.provider_name}} | </span>
+              </div>
+            </div>
+            <div>
+              <div class="sm-content">
+                <img src="@/assets/LOGO_VER1.png" width="20px" height="20px" class="m-1">대여하기 : |
+                <span v-for="(provider, idx) in movies.selectedMovieProviders.rent" :key="idx" style="text-transform:uppercase">{{provider.provider_name}} | 
+                </span>
+              </div>
+            </div>
+        </div>
+
+
+        <div class="col-6">
+          <!-- 로그인했으면 리뷰작성 -->
+          <div v-if="isLoggedIn">
+            <div v-if="isMovieLiked" @click="likeMovie(movies.selectedMovie.id)" >
+              <!-- <img src="@/assets/LOGO_black.png" width="25vh" class="ms-2 me-2 dislikebtn"> -->
+              이 영화 별로에요
+              <img src="@/assets/LOGO_black.png" width="25vh" class="ms-2 me-5 sm-content dislikebtn">
+            </div>
+            <div v-else @click="likeMovie(movies.selectedMovie.id)" >
+              <!-- <img src="@/assets/LOGO_red.png" width="25vh" class="ms-2 me-2 likebtn"> -->
+              이 영화 좋아요
+              <img src="@/assets/LOGO_red.png" width="25vh" class="ms-2 me-5 sm-content likebtn">
+            </div>
+            <div class="review-router mt-1">
+              <span class="me-3">이 영화에 대한 리뷰 쌓기</span>
+              <RouterLink :to="`/${movies.selectedMovie.id}/review/`"><img src="@/assets/LOGO_VER1.png" width="25vh"></RouterLink>
+            </div>
+          </div>
+          <!-- 아니라면 로그인 페이지로 보내기 -->
+          <div v-else>
+            <h5 class="review-alert"> 영화에 리뷰를 작성하거나 영화를 쌓으시려면 <a href="/accounts/login">로그인</a>하세요!</h5>
+          </div>
+        </div>
       </div>
-      <!-- 아니라면 로그인 페이지로 보내기 -->
-      <div v-else>
-        <h5 class="review-alert"> 영화에 리뷰를 작성하거나 영화를 쌓으시려면 <a href="/accounts/login">로그인</a>하세요!</h5>
-      </div>
+
+      <hr>
       <!-- 리뷰 보여주기 -->
       <ul v-if="reviews.length">
         <h2> 리뷰 </h2>
@@ -53,6 +91,7 @@
           </RouterLink>
         </li>
       </ul>
+
       <hr>
       <!-- 사이트 연결 -->
       <div>
@@ -124,10 +163,11 @@ export default {
   position: absolute;
   opacity: 0.2;
   z-index: 1;
+  margin-top: 60px;
 }
 
 .description {
-  z-index: 99;
+  z-index: 1;
 }
 
 .content {
@@ -141,11 +181,26 @@ export default {
 .sm-content {
   vertical-align: middle;
   font-weight: 100;
-  font-size: 13px
+  font-size: 15px
 }
 
 .review-alert {
   font-weight: 100;
   font-size: 15px;
+}
+
+.likebtn {
+  position: relative;
+  z-index: 100;
+}
+
+.dislikebtn {
+  position: relative;
+  z-index: 100;
+}
+
+.review-router {
+  position: relative;
+  z-index: 101;
 }
 </style>
