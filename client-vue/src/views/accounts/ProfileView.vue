@@ -2,17 +2,23 @@
   <div>
     <h1>Profile</h1>
 
-    <div v-if="isLoggedIn" class="profile">
-      <br>
-      <div class="profile">안녕하세요  {{ loginUser.nickname }}님!</div> 
-      <br>
-      <div class="profile">username: {{ loginUser.username}}</div>
-      <hr>
-      <div class="profile">쌓은 리뷰들: {{ loginUser.my_reviews }}</div>
-      <hr>
-      <div class="profile">쌓인 영화들: {{ loginUser.like_movies }}</div>
-      <hr>
-      <div class="profile">좋아한 리뷰 : {{ loginUser.like_reviews }}</div>
+    <div class="profile">
+      <div v-if="isLoggedIn" class="profile">
+        <br>
+        <div class="profile">안녕하세요  {{ loginUser.nickname }}님!</div> 
+        <br>
+        <div class="profile">username: {{ loginUser.username}}</div>
+        <hr>
+        <div class="profile">쌓은 리뷰들: {{ loginUser.my_reviews }}</div>
+        <hr>
+        <div class="profile">쌓인 영화들: {{ loginUser.like_movies }}</div>
+        <hr>
+        <div class="profile">좋아한 리뷰 : {{ loginUser.like_reviews }}</div>
+      </div>
+    <div v-else>
+      로그인 안 함
+    </div>
+    </div>
       <hr>
       <div class="container" >
       <h2 id="semititle" class="fw-bolder m-3">{{ loginUser.nickname }} 님이 좋아하실만한 영화를 추천해드려요!</h2>
@@ -20,11 +26,7 @@
           <MovieListItem v-for="movie in recByUser" :key="movie.id" :movie="movie"/>
         </li>
       </div>
-    </div>
-
-
-    <div v-else>
-      로그인 안 함
+ 
     </div>
 
 
