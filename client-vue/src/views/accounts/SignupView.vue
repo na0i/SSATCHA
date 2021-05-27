@@ -31,7 +31,7 @@
                                 <div class="button-set mt-2 mb-2 ">
                                   <SignupGenreSelect @like-genres="onSelect"/>
                                 </div>
-                                <button type="submit" @click="signup(signupData)" class="btn-sm btn-block btn-outline-primary mb-2 px-5 clickbtn">WELCOME to SSATCHA WORLD!</button>
+                                <button type="submit" @click="signup(signupData)" class="btn-sm btn-block btn-outline-primary col-12 mb-2 px-5 clickbtn">WELCOME to SSATCHA WORLD!</button>
                             </form>
                         </div>
                     </div>

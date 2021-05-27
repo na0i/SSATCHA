@@ -10,16 +10,19 @@
                   <div class="container">
                       <div class="row">
                           <div class="col-lg-10 col-xl-7 mx-auto">
-                              <h4 class="display-4 fw-bold">SSATCHA</h4>
-                              <h5 class="text-muted mb-4">LOGIN</h5>
+                              <h3 class="fw-bold mt-5">SSATCHA</h3>
+                              <p class="text-muted mb-3">LOGIN</p>
                               <form class="accounts-form">
                                 <div class="form-group mb-3">
-                                    <input id="username" type="text" v-model="loginData.username" placeholder="username" required="" class="form-control rounded-pill border-0 shadow-sm px-4 text-primary">
+                                    <input id="username" type="text" v-model="loginData.username" placeholder="username" required="" class="form-control border-0 shadow-sm px-4 text-primary">
                                 </div>
                                 <div class="form-group mb-3">
-                                    <input id="password1" type="password" v-model="loginData.password" placeholder="password" required="" class="form-control rounded-pill border-0 shadow-sm px-4 text-primary">
+                                    <input id="password1" type="password" v-model="loginData.password1" placeholder="password" required="" class="form-control border-0 shadow-sm px-4 text-primary">
                                 </div>
-                                <button type="submit" @click="login(loginData)" class="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm">LOGIN</button>
+                                <div class="button-set">
+                                  <SignupGenreSelect @like-genres="onSelect"/>
+                                </div>
+                                <button type="submit" @click="login(loginData)" class="btn-sm btn-block btn-outline-primary col-12 mb-2 px-5 clickbtn">SIGN UP</button>
                               </form>
                           </div>
                       </div>
@@ -59,5 +62,17 @@ export default {
 
 .login {
   font-family: 'Noto Sans KR', sans-serif;
+}
+
+.button-set {
+  background: #d6eaff;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+}
+
+.click-btn {
+  background: #3396f4;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 15px;
 }
 </style>
