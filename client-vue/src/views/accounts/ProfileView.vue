@@ -17,10 +17,12 @@
       좋아한 영화 : {{ loginUser.like_movies }}
       <hr>
       좋아한 리뷰 : {{ loginUser.like_reviews }}
-
-
-
+      <hr>
+      {{ loginUser.nickname }} 님이 좋아하실만한 영화를 추천해드려요!
+      <MovieListItem v-for="movie in recByUser" :key="movie.id" :movie="movie"/>
     </div>
+
+
     <div v-else>
       로그인 안 함
     </div>
@@ -31,21 +33,28 @@
 
 <script>
 import {mapActions, mapGetters, mapState} from 'vuex'
+import MovieListItem from "@/components/movies/MovieListItem";
 
 export default {
   name: 'ProfileView',
+  components: {
+    MovieListItem
+  },
   methods: {
-    ...mapActions(['getLoginUser'])
+    ...mapActions(['profileSetting'])
   },
   computed: {
     ...mapGetters(['isLoggedIn', ]),
-    ...mapState({loginUser: state => state.accounts.loginUser})
+    ...mapState({
+      loginUser: state => state.accounts.loginUser,
+      recByUser: state => state.accounts.recByUser,
+    })
   },
   created() {
     // 그냥 가지고만 있으면, 프로필 들어올 때마다 처음 받아본 데이터만 가지고 있네요
     // 매번 업데이트 해주겠습니다.
-    // this.profileSetting()
-    // getLoginUser()
+    this.profileSetting()
+    // this.getLoginUser()
   }
 }
 </script>

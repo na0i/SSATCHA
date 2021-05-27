@@ -10,6 +10,8 @@ urlpatterns = [
     path('initial_data/', movies.views.fetch_initial_datum),
     # 장르 정보 업데이트
     path('genres/', movies.views.get_genre_data),
+    # 장르로 추천
+    path('genres/<int:genre_pk>/', movies.views.recommend_by_genre),
     # 좋아요 누른 장르 정보 업데이트
     # path('genres/user/<int:user_pk>', movies.views.set_like_genres),
     # 단일 영화 정보
