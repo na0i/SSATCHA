@@ -19,9 +19,6 @@
                                 <div class="form-group mb-3">
                                     <input id="password" type="password" v-model="loginData.password" placeholder="password" required="" class="form-control border-0 shadow-sm px-4 text-primary">
                                 </div>
-                                <div class="button-set">
-                                  <SignupGenreSelect @like-genres="onSelect"/>
-                                </div>
                                 <button type="submit" @click="login(loginData)" class="btn-sm btn-block btn-outline-primary col-12 mb-2 px-5 clickbtn">LOGIN</button>
                               </form>
                           </div>

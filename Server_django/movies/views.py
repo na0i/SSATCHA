@@ -17,6 +17,7 @@ from movies.serializers.GenreSerializer import GenreSerializer
 from movies.serializers.MovieSerializer import MovieSerializer
 from movies.serializers.MovieListSerializer import MovieListSerializer
 from movies.serializers.MovieLikeUserSerializer import MovieLikeUserSerializer
+from movies.serializers.MovieForUserSerializer import MovieForUserSerializer
 
 from accounts.serializers.CustomUserDetailSerializer import CustomUserDetailsSerializer
 
@@ -238,6 +239,23 @@ def get_provider_url(request, movie_pk):
         'link': link
     }
     return Response(data)
+
+
+# 장르 정보 가지고 추천
+@api_view(['GET'])
+def recommend_by_genre(request, genre_pk):
+    genre = get_object_or_404(Genre, pk=genre_pk)
+
+    movies = Movie.objects.all().filter(genres__movie__genres=genre)[:6]
+    print('here')
+
+    serializer = MovieSerializer(movies, many=True)
+    print('check')
+
+    return Response(serializer.data)
+
+
+
 
 
 # 혹시 프로필 수정해서 좋아하는 장르 수정되면 이거 사용해주면 됩니다...

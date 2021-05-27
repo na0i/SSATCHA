@@ -2,11 +2,13 @@ import cookies from 'vue-cookies'
 import DRF from '@/api/drf.js'
 import axios from 'axios'
 import router from '@/router'
+import _ from "lodash";
 
 
 const state = {
   authToken: cookies.get('auth-token'),
   loginUser: cookies.get('login-user'),
+  recByUser: [],
 }
 
 const getters = {
@@ -20,10 +22,23 @@ const mutations = {
   },
   SET_USER(state, user) {
     state.loginUser = user
+  },
+  SET_REC_BY_USER(state, data) {
+    state.recByUser = data
   }
 }
 
 const actions = {
+  // 추천
+  recommendByUser({commit, state}) {
+    // const genres = state.loginUser.like_genres
+    // console.log(genres)
+    const genreId = _.sample(state.loginUser.like_genres)
+    axios.get(DRF.URL + `genres/${genreId}/`)
+      .then((res) => commit('SET_REC_BY_USER', res.data))
+      .catch((err) => console.log(err))
+  },
+
   // login 유저 정보 가져오기
   getLoginUser({commit, getters}) {
     axios.get(DRF.URL + DRF.ROUTES.user, getters.config)
@@ -34,6 +49,13 @@ const actions = {
       .catch((err) => console.log(err))
   },
 
+  // 프로필 페이지 열면
+  profileSetting({dispatch}) {
+    dispatch('getLoginUser')
+      .then(() => dispatch('recommendByUser'))
+  },
+
+
   // login 하면 list 페이지로 이동
   loginpostAuthData({ commit, dispatch }, { path, data }) {
     const FULL_URL_PATH = DRF.URL + path
@@ -41,11 +63,11 @@ const actions = {
       .then(res => {
         commit('SET_TOKEN', res.data.key)
         cookies.set('auth-token', res.data.key, '2d')
-      })
-      .then(() => {
         dispatch('getLoginUser')
-        // router.push('/')
       })
+      // .then(() => {
+        // router.push('/')
+      // })
       .catch(err => {
         console.error(err.response.data)
       })
@@ -57,13 +79,14 @@ const actions = {
     const FULL_URL_PATH = DRF.URL + path
     axios.post(FULL_URL_PATH, data)
       .then(res => {
+        console.log(res.data.key)
         commit('SET_TOKEN', res.data.key)
         cookies.set('auth-token', res.data.key, '2d')
-      })
-      .then(() => {
         dispatch('getLoginUser')
-        // router.push('/')
       })
+      // .then(() => {
+        // router.push('/')
+      // })
       .catch(err => {
         console.log(err.response.data)
         console.error(err.response.data)

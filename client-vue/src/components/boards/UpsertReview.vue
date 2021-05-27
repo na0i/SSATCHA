@@ -1,23 +1,16 @@
 <template>
+  <div>
+
   <div class="upsertreview">
-    <div class="d-flex justify-content-between">
+    <div class="d-flex justify-content-between align-items-stretch" style="margin-top: 20vh">
       <div>
         <h5 v-if="isUpdate" class="review">리뷰 수정</h5>
         <h5 v-else class="review"> 리뷰 작성</h5>
 
         <h4 class="review-title">{{ selectedMovie.title }} </h4>
       </div>
-      <div class="box">
-        <!-- <label for="rank" class="me-4"> 점수 매기기 : </label> -->
-        <select id="rank" v-model="reviewData.rank">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-        </select>
-      </div>      
-    </div>    
+
+    </div>
 
     <div class="form_group field">
       <input type="text" v-model="reviewData.title" class="form_field" placeholder="Review Title" name="name" id='name' required />
@@ -29,12 +22,36 @@
       <label for="content" class="form_label">리뷰 내용을 입력하세요. </label>
     </div>
 
+
+</div>
+
+<div class="container d-flex justify-content-center mt-3">
+<div class="mt-5">
     <span v-if="isUpdate">
-      <button @click="updateReview(reviewData)" class="btn btn-primary"> 수정 완료 </button>
+      <button @click="updateReview(reviewData)" class="button mt-3"> 수정 완료 </button>
     </span>
     <span v-else>
-      <button @click="createReview(reviewData)" class="btn btn-primary"> 작성 완료 </button>
+      <button @click="createReview(reviewData)" class="button mt-3"> 작성 완료 </button>
     </span>
+  </div>
+
+
+  <div class="row">
+    <div class="col-3">
+     <div class="optionbox">
+      <select id="rank" v-model="reviewData.rank">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select>
+     </div>
+    </div>
+  </div>
+
+</div>
+
 
   </div>
 </template>
@@ -82,7 +99,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: 60vh;
 
   font-family: 'Noto Sans KR', sans-serif;
   color: aliceblue;
@@ -113,6 +130,7 @@ export default {
   -webkit-appearance: button;
   appearance: button;
   outline: none;
+  margin: auto;
 }
 
 .box::before {
@@ -137,7 +155,7 @@ export default {
 }
 
 .box select option {
-  padding: 30px;
+  /*padding: 30px;*/
 }
 /* select button 끝 */
 
@@ -202,5 +220,65 @@ export default {
 }
 
 /* input form css 끝 */
+
+
+/*셀렉트박스 */
+.optionbox {
+    position: absolute;
+    /*top: 70%;*/
+    right: 12%;
+    transform: translate(-50%, -50%)
+}
+
+.optionbox select {
+    background: #0563af;
+    color: #fff;
+    padding: 10px;
+    width: 200px;
+    height: 50px;
+    border: none;
+    font-size: 20px;
+    /*box-shadow: 0 5px 48px rgba(5, 99, 175, 0.89);*/
+    -webkit-appearance: button;
+    outline: none
+}
+
+.optionbox:before {
+    content: '\f358';
+    font-family: "Font Awesome 5 free";
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 50px;
+    width: 50px;
+    background: #0563af;
+    text-align: center;
+    line-height: 50px;
+    color: #fff;
+    font-size: 30px;
+    pointer-events: none
+}
+
+.button {
+    position: absolute;
+    /*top: 70%;*/
+    right: 12%;
+    transform: translate(-50%, -50%)
+}
+
+.button {
+    background: #0563af;
+    color: #fff;
+    padding: 10px;
+    width: 200px;
+    height: 50px;
+    border: none;
+    font-size: 20px;
+    /*box-shadow: 0 5px 48px rgba(5, 99, 175, 0.89);*/
+    -webkit-appearance: button;
+    outline: none
+}
+
+
 
 </style>
