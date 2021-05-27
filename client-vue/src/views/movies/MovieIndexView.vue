@@ -8,7 +8,7 @@
       </div>
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <img src="@/assets/interstella.jpg" class="d-block w-100" height="600" alt="interstella_poster">
+          <img src="@/assets/interstella.jpg" class="d-block w-100" height="100%" alt="interstella_poster">
           <div class="carousel-caption d-none d-md-block">
             <div class="mb-5 pb-3">
               <h2 class="fw-bolder">I N T E R S T E L L A R</h2>
@@ -29,7 +29,7 @@
           </div>
         </div>
         <div class="carousel-item">
-          <img src="@/assets/joker.jpg" class="d-block w-100" height="600" alt="darknight_poster">
+          <img src="@/assets/joker.jpg" class="d-block w-100" height="100%" alt="darknight_poster">
           <div class="carousel-caption d-none d-md-block">
             <div class="mb-5 pb-3">
               <h2 class="fw-bolder">J O K E R</h2>
@@ -50,7 +50,7 @@
           </div>
         </div>
         <div class="carousel-item">
-          <img src="@/assets/frozen.jpg" class="d-block w-100" height="600" alt="lalaland_poster">
+          <img src="@/assets/frozen.jpg" class="d-block w-100" height="100%" alt="lalaland_poster">
           <div class="carousel-caption d-none d-md-block">
             <div class="mb-5 pb-3">
               <h2 class="fw-bolder">F R O Z E N 2</h2>

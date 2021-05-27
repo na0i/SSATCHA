@@ -48,17 +48,30 @@ const actions = {
         console.error(err.response.data)
       })
   },
+
+  // 회원가입시 등록한 장르 저장
+  // async setLikeGenres({dispatch, state, getters}, selected_genres) {
+  //   console.log('hjere')
+  //   console.log(selected_genres)
+  //   await dispatch('getLoginUser')
+  //   axios.post(DRF.URL + DRF.ROUTES.genres + `user/${state.loginUser.id}/`, selected_genres, getters.config)
+  //     .then(() => dispatch('getLoginUser'))
+  //     .catch((err) => console.log(err))
+  //
+  // },
+
   // signup 하면 profile 등록 페이지로 이동 
-  signuppostAuthData({ commit, dispatch }, { path, data }) {
+  signuppostAuthData({ commit }, { path, data }) {
     const FULL_URL_PATH = DRF.URL + path
+    console.log(data)
     axios.post(FULL_URL_PATH, data)
       .then(res => {
         commit('SET_TOKEN', res.data.key)
         cookies.set('auth-token', res.data.key, '2d')
-        dispatch('getLoginUser')
-        router.go(-1)
       })
+      router.push('/')
       .catch(err => {
+        console.log(err.response.data)
         console.error(err.response.data)
       })
   },
@@ -66,6 +79,7 @@ const actions = {
   signup({ dispatch }, signupData) {
     const info = {
       data: signupData,
+      // selected_genres: likeGenres,
       path: DRF.ROUTES.signup
     }
     dispatch('signuppostAuthData', info)

@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 import pprint
 import requests
@@ -17,6 +17,8 @@ from movies.serializers.GenreSerializer import GenreSerializer
 from movies.serializers.MovieSerializer import MovieSerializer
 from movies.serializers.MovieListSerializer import MovieListSerializer
 from movies.serializers.MovieLikeUserSerializer import MovieLikeUserSerializer
+
+from accounts.serializers.CustomUserDetailSerializer import CustomUserDetailsSerializer
 
 
 @api_view(['POST', 'GET'])
@@ -231,4 +233,17 @@ def like_movie(request, movie_pk):
 
     serializer = MovieLikeUserSerializer(movie)
     return Response(serializer.data)
+
+
+# def set_like_genres(request, user_pk):
+#     user = get_object_or_404(get_user_model(), pk=user_pk)
+#     genres = request.data['like_genres']
+#
+#     for genre in genres:
+#         if not user.like_genres.filter(id=genre['id']).exists():
+#             user.like_genres.add(genre)
+#             user.save()
+#
+#     serializer = CustomUserDetailsSerializer(user)
+#     return Response(serializer.data)
 
