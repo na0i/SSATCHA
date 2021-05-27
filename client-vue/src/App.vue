@@ -21,7 +21,7 @@
           </span>
         </a>
 
-          <div >
+          <div class="m-3">
             <SearchBar/>
           </div>
       </div>

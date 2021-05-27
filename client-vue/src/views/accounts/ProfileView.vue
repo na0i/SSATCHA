@@ -2,7 +2,7 @@
   <div>
     <h1>Profile</h1>
 
-    <div v-if="isLoggedIn">
+    <div v-if="isLoggedIn" class="profile">
       로그인 ok
         <h3>여기는 이제 프로필 다 만들었을 때 보이는 화면</h3>
         -> 닉네임이랑, 좋아요 누른 리뷰, 좋아요 누른 영화 목록 보여주고,
@@ -18,8 +18,12 @@
       <hr>
       좋아한 리뷰 : {{ loginUser.like_reviews }}
       <hr>
-      {{ loginUser.nickname }} 님이 좋아하실만한 영화를 추천해드려요!
-      <MovieListItem v-for="movie in recByUser" :key="movie.id" :movie="movie"/>
+      <div class="container" >
+      <h2 id="semititle" class="fw-bolder m-3">{{ loginUser.nickname }} 님이 좋아하실만한 영화를 추천해드려요!</h2>
+        <li class="row row-cols-6">
+          <MovieListItem v-for="movie in recByUser" :key="movie.id" :movie="movie"/>
+        </li>
+      </div>
     </div>
 
 
@@ -59,5 +63,16 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+#semititle {
+  /* font-family: Noto Sans KR, sans-serif; */
+  font-size: 22px;
+  color: white;
+  text-align: left;
+}
+
+.profile {
+  position: relative;
+  z-index: 99;
+}
 </style>

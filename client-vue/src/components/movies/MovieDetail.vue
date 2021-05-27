@@ -81,14 +81,15 @@
 
       <hr>
       <!-- 리뷰 보여주기 -->
-      <ul v-if="reviews.length" class="review-list">
+      <ol v-if="reviews.length" class="review-list container">
         <h2> 리뷰 </h2>
-        <li v-for="(review, idx) in reviews" :key="idx" @click="fetchReview(movies.selectedMovie.id, review.id)">
+        <li v-for="(review, idx) in reviews" :key="idx" @click="fetchReview(movies.selectedMovie.id, review.id)" class="h3 mt-3 ms-3">
           <RouterLink :to="`/${movies.selectedMovie.id}/review/${review.id}/`">
             {{ review.title }}
           </RouterLink>
         </li>
-      </ul>
+      </ol>
+      <h3 v-else class="text-center mt-2"> 이 영화의 첫 리뷰를 작성해주세요!</h3>
     </div>
   </div>
 </template>
