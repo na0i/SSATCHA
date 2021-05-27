@@ -1,6 +1,6 @@
 <template>
   <div class="main-container">
-    <div class="movie-list mt-5 mb-5">
+    <div class="movie-list pt-2 mb-5">
       <div class="movie-card" @click="setMovieDetail(movie.id)">
         <RouterLink :to="`/${movie.id}`" class="card-text movietitle">
           <img :src="fullpath" alt="movieposter"/>
@@ -47,7 +47,7 @@ export default {
 
 /* font css 시작 */
 .movietitle {
-  font-size: 17px;
+  font-size: 15px;
   color: #ffffff;
   text-decoration: none;
   text-align: left;
@@ -73,7 +73,7 @@ export default {
 }
 
 .card-context {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .movie-card {
