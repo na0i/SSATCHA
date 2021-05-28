@@ -14,7 +14,7 @@
           <span id="semititle" class="fw-bolder m-3">쌓은 리뷰들: </span>
           <li>
             <a href="" v-for="review in loginUser.my_reviews" :key="`r${review.id}`">
-              {{ review.title }}
+              <p class="ssatchareview">{{ review.title }}</p>
             </a>
           </li>
         </div>
@@ -25,7 +25,7 @@
           <span id="semititle" class="fw-bolder m-3">좋아한 리뷰:</span>
           <li>
             <a href="" v-for="review in loginUser.like_reviews" :key="`l${review.id}`">
-              {{ review.title }}
+              <p class="ssatchareview">{{ review.title }}</p>
             </a>
           </li>
         </div>
@@ -101,5 +101,9 @@ export default {
   position: relative;
   z-index: 99;
   color: white;
+}
+
+.ssatchareview {
+  text-decoration: none;
 }
 </style>
