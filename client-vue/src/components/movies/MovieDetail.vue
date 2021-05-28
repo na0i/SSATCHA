@@ -89,7 +89,7 @@
           </RouterLink>
         </li>
       </ol>
-      <h3 v-else class="text-center mt-2"> 이 영화의 첫 리뷰를 작성해주세요!</h3>
+      <h3 v-else class="text-center mt-2"> 이 영화의 첫 리뷰를 쌓아주세요!</h3>
     </div>
   </div>
 </template>

@@ -1,33 +1,33 @@
 <template>
   <div>
-    <h1>Profile</h1>
+    <p>Profile</p>
 
     <div v-if="isLoggedIn" class="profile">
-      <div class="container">
+      <div class="container mt-5">
         <br>
         <div id="semititle" class="fw-bolder m-3">안녕하세요  {{ loginUser.nickname }}님!</div>
-        <br>
-        <div class="profile">username: {{ loginUser.username}}</div>
+        <!--<br>-->
+        <!--<div class="profile">username: {{ loginUser.username}}</div>-->
         <hr>
         
         <div>
           <span id="semititle" class="fw-bolder m-3">쌓은 리뷰들: </span>
-          <li>
-            <a href="" v-for="review in loginUser.my_reviews" :key="`r${review.id}`">
-              <p class="ssatchareview">{{ review.title }}</p>
-            </a>
-          </li>
+          <div v-for="review in loginUser.my_reviews" :key="`r${review.id}`" @click="fetchReview(review.movie.id, review.id)" class="h3 mt-3 ms-3">
+            <RouterLink :to="`/${review.movie.id}/review/${review.id}/`" class="text-decoration-none h2">
+              {{ review.title }}
+            </RouterLink>
+          </div>
         </div>
 
         <hr>
 
         <div>
           <span id="semititle" class="fw-bolder m-3">좋아한 리뷰:</span>
-          <li>
-            <a href="" v-for="review in loginUser.like_reviews" :key="`l${review.id}`">
-              <p class="ssatchareview">{{ review.title }}</p>
-            </a>
-          </li>
+          <div v-for="review in loginUser.like_reviews" :key="`r${review.id}`" @click="fetchReview(review.movie.id, review.id)" class="h3 mt-3 ms-3">
+            <RouterLink :to="`/${review.movie.id}/review/${review.id}/`" class="text-decoration-none h2">
+              {{ review.title }}
+            </RouterLink>
+          </div>
         </div>
         
         <hr>
@@ -71,7 +71,10 @@ export default {
     MovieListItem
   },
   methods: {
-    ...mapActions(['profileSetting'])
+    ...mapActions(['profileSetting']),
+    fetchReview(movie, review) {
+      this.$store.dispatch('fetchReview', { movie: movie, review: review})
+    },
   },
   computed: {
     ...mapGetters(['isLoggedIn', ]),
