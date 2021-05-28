@@ -1,11 +1,13 @@
 <template>
   <div>
-    <img class=backdrop :src="full_backdroppath" width="100%">
+    <p>r</p>
+
+    <img class="backdrop" :src="full_backdroppath" width="100%">
     <div class="container-fluid reviewdetail">
         <!-- <img src="@/assets/LOGO_VER1.png"> -->
         <br><br><br>
           <div @click="setMovieDetail(review.movie.id)" class="h3 d-inline-block">
-            <RouterLink :to="`/${review.movie.id}`">
+            <RouterLink :to="`/${review.movie.id}`" class="text-decoration-none">
               {{ review.movie.title }}
             </RouterLink>
           </div>
