@@ -9,48 +9,49 @@
         <br>
         <div class="profile">username: {{ loginUser.username}}</div>
         <hr>
+        
         <div>
-          <span id="semititle" class="fw-bolder m-3">
-          쌓은 리뷰들:
-          </span>
+          <span id="semititle" class="fw-bolder m-3">쌓은 리뷰들: </span>
           <li>
             <a href="" v-for="review in loginUser.my_reviews" :key="`r${review.id}`">
               {{ review.title }}
             </a>
           </li>
         </div>
+
         <hr>
-         <div>
-          <span id="semititle" class="fw-bolder m-3">
-          쌓인 영화들:
-          </span>
-           <li class="row row-cols-6">
+
+        <div>
+          <span id="semititle" class="fw-bolder m-3">좋아한 리뷰:</span>
+          <li>
+            <a href="" v-for="review in loginUser.like_reviews" :key="`l${review.id}`">
+              {{ review.title }}
+            </a>
+          </li>
+        </div>
+        
+        <hr>
+        
+        <div>
+          <span id="semititle" class="fw-bolder m-3">쌓인 영화들:</span>
+            <li class="row row-cols-6">
               <MovieListItem v-for="movie in loginUser.like_movies" :key="`m${movie.id}`" :movie="movie"/>
             </li>
-          <!--<li v-for="movie in like_movies" :key="`m${movie.id}`" :movie="movie">-->
-          <!--  {{ loginUser.like_movies }}-->
-          <!--</li>-->
+            <!--<li v-for="movie in like_movies" :key="`m${movie.id}`" :movie="movie">-->
+            <!--  {{ loginUser.like_movies }}-->
+            <!--</li>-->
         </div>
+
         <hr>
-        <div class="profile">
-        <div>
-          <span id="semititle" class="fw-bolder m-3">
-          좋아한 리뷰:
-          </span>
-          <li>
-            {{ loginUser.like_reviews }}
-          </li>
-        <hr>
-      </div>
+
       <div class="container" >
-      <h2 id="semititle" class="fw-bolder m-3">{{ loginUser.nickname }} 님이 좋아하실만한 영화를 추천해드려요!</h2>
+        <h2 id="semititle" class="fw-bolder m-3">{{ loginUser.nickname }} 님이 좋아하실만한 영화를 추천해드려요!</h2>
         <li class="row row-cols-6">
           <MovieListItem v-for="movie in recByUser" :key="movie.id" :movie="movie"/>
         </li>
       </div>
-      </div>
-      </div>
-      </div>
+    </div>
+  </div>
 
 
     <div v-else>
