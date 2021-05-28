@@ -2,33 +2,60 @@
   <div>
     <h1>Profile</h1>
 
-    <div class="profile">
-      <div v-if="isLoggedIn" class="profile">
+    <div v-if="isLoggedIn" class="profile">
+      <div class="container">
         <br>
-        <div class="profile">안녕하세요  {{ loginUser.nickname }}님!</div> 
+        <div id="semititle" class="fw-bolder m-3">안녕하세요  {{ loginUser.nickname }}님!</div>
         <br>
         <div class="profile">username: {{ loginUser.username}}</div>
         <hr>
-        <div class="profile">쌓은 리뷰들: {{ loginUser.my_reviews }}</div>
+        <div>
+          <span id="semititle" class="fw-bolder m-3">
+          쌓은 리뷰들:
+          </span>
+          <li>
+            <a href="" v-for="review in loginUser.my_reviews" :key="`r${review.id}`">
+              {{ review.title }}
+            </a>
+          </li>
+        </div>
         <hr>
-        <div class="profile">쌓인 영화들: {{ loginUser.like_movies }}</div>
+         <div>
+          <span id="semititle" class="fw-bolder m-3">
+          쌓인 영화들:
+          </span>
+           <li class="row row-cols-6">
+              <MovieListItem v-for="movie in loginUser.like_movies" :key="`m${movie.id}`" :movie="movie"/>
+            </li>
+          <!--<li v-for="movie in like_movies" :key="`m${movie.id}`" :movie="movie">-->
+          <!--  {{ loginUser.like_movies }}-->
+          <!--</li>-->
+        </div>
         <hr>
-        <div class="profile">좋아한 리뷰 : {{ loginUser.like_reviews }}</div>
+        <div class="profile">
+        <div>
+          <span id="semititle" class="fw-bolder m-3">
+          좋아한 리뷰:
+          </span>
+          <li>
+            {{ loginUser.like_reviews }}
+          </li>
+        <hr>
       </div>
-    <div v-else>
-      로그인 안 함
-    </div>
-    </div>
-      <hr>
       <div class="container" >
       <h2 id="semititle" class="fw-bolder m-3">{{ loginUser.nickname }} 님이 좋아하실만한 영화를 추천해드려요!</h2>
         <li class="row row-cols-6">
           <MovieListItem v-for="movie in recByUser" :key="movie.id" :movie="movie"/>
         </li>
       </div>
- 
-    </div>
+      </div>
+      </div>
+      </div>
 
+
+    <div v-else>
+      로그인 안 함
+    </div>
 
   </div>
 </template>
@@ -72,5 +99,6 @@ export default {
 .profile {
   position: relative;
   z-index: 99;
+  color: white;
 }
 </style>
