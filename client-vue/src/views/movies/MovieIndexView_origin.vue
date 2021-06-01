@@ -78,67 +78,36 @@
         <span class="visually-hidden">Next</span>
       </button>
     </div>
-
-
-
     <div class="container">
-
-      <p class="fw-bolder mt-3 semititle">TOP RATED</p>
-      <!--Carousel Wrapper-->
-      <div id="multi-item-example" class="carousel slide carousel-multi-item" data-ride="carousel">
-
-        <!--Controls-->
-        <div class="controls-top">
-          <a class="btn-floating" href="#multi-item-example" data-slide="prev"><i class="fas fa-chevron-left"></i></a>
-          <a class="btn-floating" href="#multi-item-example" data-slide="next"><i
-              class="fas fa-chevron-right"></i></a>
-        </div>
-        <!--/.Controls-->
-
-        <!--Indicators-->
-        <ol class="carousel-indicators">
-          <li data-target="#multi-item-example" data-slide-to="0" class="active"></li>
-          <li data-target="#multi-item-example" data-slide-to="1"></li>
-        </ol>
-        <!--/.Indicators-->
-
-        <div class="carousel-inner" role="listbox">
-
-        <!--<ul class="row row-cols-6 carousel-item active">-->
-        <div class="carousel-item active">
-          <div class="row row-cols-6">
-            <MovieListItem v-for="movie in topRated.slice(0,6)" :key="`${movie.id}`" :movie="movie"/>
-          </div>
-        </div>
-
-        <div class="carousel-item">
-          <div class="row row-cols-6">
-            <MovieListItem v-for="movie in topRated.slice(7,12)" :key="`${movie.id}`" :movie="movie"/>
-          </div>
-        </div>
-
-        </div>
+      <p id="semititle" class="fw-bolder mt-3">TOP RATED</p>
+      <div>
+        <li class="row row-cols-6">
+          <MovieListItem v-for="movie in topRated.slice(0,12)" :key="`${movie.id}`" :movie="movie"/>
+        </li>
       </div>
-
-      <p class="fw-bolder mt-5 semititle">POPULARITY</p>
-      <ul>
+    
+      <p id="semititle" class="fw-bolder mt-5">POPULARITY</p>
+      <div>
         <li class="row row-cols-6">
           <MovieListItem v-for="movie in popular.slice(0,6)" :key="`${movie.id}`" :movie="movie"/>
+          <!-- {{ movie.popularity }}  -->
         </li>
-      </ul>
+      </div>
 
-      <p class="fw-bolder mt-5 semititle">KOREAN MOVIES</p>
-      <ul>
+      <p id="semititle" class="fw-bolder mt-5">KOREAN MOVIES</p>
+      <div>
         <li class="row row-cols-6">
           <MovieListItem v-for="movie in korean.slice(0,6)" :key="`${movie.id}`" :movie="movie"/>
+          <!-- {{ movie.vote_average }} -->
         </li>
-      </ul>
+      </div>
 
-      <p class="fw-bolder mt-5 semititle">고전 명작</p>
+      <p id="semititle" class="fw-bolder mt-5">고전 명작</p>
       <div>
-        <ul class="row row-cols-6">
+        <li class="row row-cols-6">
           <MovieListItem v-for="movie in classic.slice(10,16)" :key="`${movie.id}`" :movie="movie"/>
-        </ul>
+          <!-- {{ movie.release_date }} -->
+        </li>
       </div>
     </div>
   </div>
@@ -181,7 +150,7 @@ export default {
   color: #b7d1eb;
 }
 
-.semititle {
+#semititle {
   /* font-family: Noto Sans KR, sans-serif; */
   font-size: 22px;
   color: white;

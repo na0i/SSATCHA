@@ -63,11 +63,8 @@ const actions = {
       .then(res => {
         commit('SET_TOKEN', res.data.key)
         cookies.set('auth-token', res.data.key, '2d')
-        dispatch('getLoginUser')
       })
-      // .then(() => {
-        // router.push('/')
-      // })
+      .then(() => dispatch('getLoginUser'))
       .catch(err => {
         console.error(err.response.data)
       })
@@ -79,14 +76,11 @@ const actions = {
     const FULL_URL_PATH = DRF.URL + path
     axios.post(FULL_URL_PATH, data)
       .then(res => {
-        console.log(res.data.key)
         commit('SET_TOKEN', res.data.key)
         cookies.set('auth-token', res.data.key, '2d')
-        dispatch('getLoginUser')
       })
-      // .then(() => {
-        // router.push('/')
-      // })
+      .then(() => dispatch('getLoginUser'))
+      // .then(() => router.go(-1))
       .catch(err => {
         console.log(err.response.data)
         console.error(err.response.data)
@@ -118,8 +112,8 @@ const actions = {
         cookies.remove('login-user')
         commit('SET_TOKEN', null)  // state 에서도 삭제
         commit('SET_USER', null)
-        router.go(-1)
       })
+      .then(() => router.go(-1))
       .catch(err => console.error(err.response.data))
   },
 }
