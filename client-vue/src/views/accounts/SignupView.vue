@@ -66,7 +66,7 @@ export default {
   },
   methods: {
     ...mapActions(['signup']),
-    ...mapState({genreList: state => state.movies.genreList}), // ?? 왜 안대?
+    ...mapState({genreList: state => state.movies.genreList}),
     onSelect(likeGenres) {
       this.signupData.selected_genres = likeGenres
     }
