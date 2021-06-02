@@ -31,26 +31,41 @@
             <span class="datetime">수정일: {{ review.updated_at }}</span>
           </div>
 
-        <span v-if="isReviewLiked">
-          <button @click="likeReview(commentData)" class="btn btn-secondary"> 리뷰 좋아요 취소 </button>
-        </span>
-        <span v-else>
-          <button @click="likeReview(commentData)" class="btn btn-danger"> 리뷰 좋아요 </button>
-        </span>
+        <!--로그인 했을 때-->
+        <div v-if="isLoggedIn">
+          <span v-if="isReviewLiked">
+            <button @click="likeReview(commentData)" class="btn btn-secondary"> 리뷰 좋아요 취소 </button>
+          </span>
+          <span v-else>
+            <button @click="likeReview(commentData)" class="btn btn-danger"> 리뷰 좋아요 </button>
+          </span>
 
-
-        <div v-if="review.user === $store.state.accounts.loginUser.pk">
-          <button @click="editReview" class="btn btn-info ms-2"> 리뷰 수정 </button>
-          <button @click="deleteReview(review)" class="btn btn-dark ms-2"> 리뷰 삭제 </button>
+          <div v-if="review.user === $store.state.accounts.loginUser.pk">
+            <button @click="editReview" class="btn btn-info ms-2"> 리뷰 수정 </button>
+            <button @click="deleteReview(review)" class="btn btn-dark ms-2"> 리뷰 삭제 </button>
+          </div>
         </div>
 
+        <div v-else>
+          <h5>
+            리뷰에 좋아요를 누르려면 <a href="/accounts/login">로그인</a>이 필요합니다.
+          </h5>
+        </div>
 
         <hr>
 
         <h3>댓글</h3>
         <div class="comment-input">
+          <span v-if="isLoggedIn">
           <input class="me-1" v-model="commentData.content" @keyup.enter="[createComment(commentData), onSubmit()]"/>
-          <button @click="[createComment(commentData), onSubmit()]" class="btn btn-primary">댓글 달기</button>
+            <button @click="[createComment(commentData), onSubmit()]" class="btn btn-primary">댓글 달기</button>
+          </span>
+          <span v-else>
+            <h5>
+              댓글을 달기 위해서는 <a href="/accounts/login">로그인</a>이 필요합니다.
+            </h5>
+          </span>
+
         </div>
 
         <div v-if="isCommented">
@@ -105,7 +120,7 @@ export default {
   },
   computed: {
     ...mapState({selectedReview: state => state.boards.selectedReview}),
-    ...mapGetters(['isReviewLiked', 'notNestedComments', 'getMovieId']),
+    ...mapGetters(['isReviewLiked', 'notNestedComments', 'getMovieId', 'isLoggedIn']),
     isCommented() {
       return !!this.review.comment_set;
     },
