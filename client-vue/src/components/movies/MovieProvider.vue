@@ -3,7 +3,6 @@
     <div>
 
       <a href="" target="_blank" @click.prevent="crawlingProvider(crawlingData)">
-      <!--<a href="" target="_blank" @click.prevent="onClick">-->
         <img :src="fullpath" :alt="provider.provider_name" width="40px" height="40px">
       </a>
       {{provider.provider_name}}
@@ -33,14 +32,11 @@ export default {
   },
   methods: {
     ...mapActions(['crawlingProvider']),
-    // onClick() {
-    //   window.open('https://www.naver.com', '_blank')
-    // }
   },
   computed: {
     ...mapState(['selectedProviderLink']),
     fullpath() {
-      return "https://image.tmdb.org/t/p/original" + this.provider.logo_path
+      return "https://image.tmdb.org/t/p/original/" + this.provider.logo_path
     },
   },
   watch: {
