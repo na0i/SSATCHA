@@ -1,32 +1,36 @@
 <template>
   <div id="app">
-    <nav class="nav navbar navbar-expand-lg">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="/">
-          <img src="@/assets/LOGO_KOR.png" alt="LOGO_KOR" width="168" height="35" class="d-inline-block ms-1 align-self-center">
+    <nav class="nav navbar navbar-expand-lg container-fluid d-flex justify-content-between align-items-end m-2">
+      <!--<div class="container-fluid d-flex justify-content-between align-items-end m-2">-->
+        <div class="d-inline-flex align-items-end">
 
-          <span class="ms-4">
-            <span class="ms-5">
-              <RouterLink v-if="!isLoggedIn" :to="{ name: 'Signup' }">SIGNUP</RouterLink>
-            </span>
-            <span class="ms-5">
-              <RouterLink v-if="!isLoggedIn" :to="{ name: 'Login' }">LOGIN</RouterLink>
-            </span>
-            <span class="ms-5">
-              <RouterLink v-if="isLoggedIn" :to="{ name: 'Profile' }">PROFILE </RouterLink>
-            </span>
-            <span class="ms-5">
-              <RouterLink v-if="isLoggedIn" :to="{ name: 'Logout' }">LOGOUT </RouterLink>
-            </span>
-          </span>
+        <a class="navbar-brand ms-2 d-block" href="/">
+          <img src="@/assets/LOGO_KOR.png" alt="LOGO_KOR" width="168" height="35" class="ms-1 align-self-center">
         </a>
 
-          <div class="m-3">
-            <SearchBar/>
+          <div class="d-inline-block mx-5">
+            <span v-if="!isLoggedIn">
+              <RouterLink :to="{ name: 'Signup' }">SIGNUP</RouterLink>
+            </span>
+            <span v-if="!isLoggedIn" class="ms-5">
+              <RouterLink :to="{ name: 'Login' }">LOGIN</RouterLink>
+            </span>
+            <span v-if="isLoggedIn">
+              <RouterLink :to="{ name: 'Profile' }">PROFILE </RouterLink>
+            </span>
+            <span v-if="isLoggedIn" class="ms-5">
+              <RouterLink :to="{ name: 'Logout' }">LOGOUT </RouterLink>
+            </span>
           </div>
-      </div>
+        </div>
+        <div class="w-50">
+          <SearchBar/>
+        </div>
+      <!--</div>-->
     </nav>
-    <RouterView/>
+    <div id="wrapper">
+      <RouterView/>
+    </div>
   </div>
 </template>
 
@@ -52,7 +56,7 @@ export default {
 <style scoped>
 .nav {
   position: absolute;
-  z-index: 15;
+  z-index: 100;
   width: 100%;
   vertical-align: middle;
 }
@@ -60,6 +64,7 @@ export default {
 .nav a {
   color: #b7d1eb;
   text-decoration: none;
+  /*font-weight: bolder;*/
   font-size: 18px;
 }
 
@@ -69,6 +74,5 @@ export default {
   /* 텍스트가 렌더링될 때 부드럽게 표현 */
   -moz-osx-font-smoothing: grayscale; 
 }
-
 
 </style>

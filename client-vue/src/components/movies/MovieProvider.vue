@@ -39,12 +39,6 @@ export default {
       return "https://image.tmdb.org/t/p/original/" + this.provider.logo_path
     },
   },
-  watch: {
-    url: function (val) {
-      console.log('changed')
-      window.open(val)
-    }
-  }
 }
 </script>
 
