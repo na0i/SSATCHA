@@ -4,13 +4,13 @@
 
       <div v-if="isEdit">
         <input v-model="comment.content" @keyup.enter="[updateComment(commentData), updateRequested()]">
-        <button @click="updateComment(commentData), updateRequested()"> 수정 완료 </button>
+        <button @click="[updateComment(commentData), updateRequested()]"> 수정 완료 </button>
       </div>
       <div v-else class="d-inline-block my-2">
         <h3>{{ comment.content }}</h3>
       </div>
 
-    <div class="d-inline-block ms-5">
+    <div class="d-inline-block">
       <span>
         <button @click="onClick" class="btn btn-warning"> 댓글 달기 </button>
       </span>

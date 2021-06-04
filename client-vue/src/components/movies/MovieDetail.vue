@@ -2,7 +2,7 @@
   <div id="moviedetail">
     <img class=backdrop :src="full_backdroppath" width="100%" />
     <br><br><br>
-    <div class="container-fluid">
+    <div class="container-fluid" style="margin-top: 30px">
       <div class="row">
         <img :src="full_posterpath" class="col-3 ms-3 poster"/>
         <div class="col-8">
@@ -53,6 +53,10 @@
             <div v-if="isVoid">
               <p>현재 감상할 수 있는 곳이 없어요!</p>
             </div>
+            <div v-else>
+              <br>
+              <p>* 아이콘을 클릭하시면 해당 페이지로 연결됩니다.</p>
+            </div>
           </div>
         </div>
 
@@ -84,8 +88,10 @@
       </div>
       <hr>
       <!-- 리뷰 보여주기 -->
-      <ol v-if="reviews.length" class="review-list container">
-        <h2> 리뷰 </h2>
+      <ol v-if="reviews.length" class="review-list">
+        <div class="d-flex align-items-center">
+          <img src="@/assets/LOGO_VER1.png" width="25vh" class="mb-1"><h3 class="d-inline-block"> 쌓인 리뷰 </h3>
+        </div>
         <li v-for="(review, idx) in reviews" :key="idx" @click="fetchReview(selectedMovie.id, review.id)" class="h3 mt-3 ms-3">
           <RouterLink :to="`/${selectedMovie.id}/review/${review.id}/`">
             {{ review.title }}
@@ -163,7 +169,7 @@ export default {
   position: absolute;
   opacity: 0.2;
   z-index: 1;
-  margin-top: 60px;
+  margin-top: 80px;
 }
 
 .description {

@@ -114,7 +114,6 @@ const actions = {
         cookies.remove('auth-token')  // cookie 삭제 | state 에서는 존재
         cookies.remove('login-user')
         commit('SET_TOKEN', '')  // state 에서도 삭제
-        console.log('here----')
         commit('SET_USER', '')
       })
       .then(() => router.go(-1))
