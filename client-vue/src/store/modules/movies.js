@@ -184,7 +184,8 @@ const actions = {
       }
     })
       .then((res) => {
-        // commit('SET_SELECTED_PROVIDER_LINK', res.data.link)
+        // 에러때문에 아래 문장 잠시 주석 해제할게요
+        commit('SET_SELECTED_PROVIDER_LINK', res.data.link)
         if (res.data.link === '') {
           alert('앗! 죄송합니다. 해당 사이트로 연결이 불가합니다.')
         } else {
