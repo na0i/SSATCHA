@@ -176,7 +176,7 @@ const actions = {
   },
 
   // 영화 볼 수 있는 사이트 크롤링
-  crawlingProvider({commit}, {method, provider, movie}) {
+  crawlingProvider(context, {method, provider, movie}) {
     axios.get(DRF.URL + `${movie}/provider/`, {
       params: {
         method: method,
