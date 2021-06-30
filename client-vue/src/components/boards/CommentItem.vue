@@ -11,13 +11,13 @@
       </div>
 
     <div class="d-inline-block">
-      <div class="d-inline-block">
-        <span @click="onClick" class="btn btn-create ms-3">[ 댓글 달기 </span>
-      </div>
-
       <div v-if="comment.user === $store.state.accounts.loginUser.id" class="d-inline-block">
+        <span @click="onClick" class="btn btn-create ms-3">[ 답글 달기</span>
         <span @click="editClicked" class="btn btn-update"> 댓글 수정</span>
         <span @click="deleteClicked" class="btn btn-delete">댓글 삭제 ]</span>
+      </div>
+      <div v-else class="d-inline-block btn-update">
+        <span @click="onClick" class="btn btn-create ms-3">[ 답글 달기 ]</span>
       </div>
     </div>
       <!-- 대댓글 달기 -->
